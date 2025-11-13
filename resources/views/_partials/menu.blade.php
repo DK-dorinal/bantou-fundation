@@ -145,6 +145,7 @@
         transition: var(--transition);
         will-change: transform, background, box-shadow;
         font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        border-radius: 0 0 10px 10px;
     }
 
     .header.scrolled {
