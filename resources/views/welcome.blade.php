@@ -48,65 +48,6 @@
         padding: 0 20px;
     }
 
-    /* Section Hero améliorée */
-    .hero-section {
-        background: linear-gradient(rgba(15, 26, 58, 0.7), rgba(26, 43, 85, 0.7)), 
-                    url('https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2072&q=80') no-repeat center center;
-        background-size: cover;
-        color: var(--pure-white);
-        padding: 2cm;
-        text-align: center;
-        position: relative;
-        overflow: hidden;
-        min-height: 80vh;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-
-    .hero-content {
-        position: relative;
-        z-index: 1;
-        max-width: 800px;
-        margin: 0 auto;
-        padding: 2cm;
-        background-color: rgba(255, 255, 255, 0.1);
-        backdrop-filter: blur(10px);
-        border-radius: var(--border-radius);
-        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
-        border: 1px solid rgba(255, 255, 255, 0.1);
-    }
-
-    .hero-title {
-        font-size: clamp(2.5rem, 5vw, 4rem);
-        margin-bottom: 20px;
-        font-weight: 700;
-        opacity: 0;
-        transform: translateY(20px);
-        animation: fadeInUp 1s ease forwards;
-        text-align: center;
-    }
-
-    .hero-subtitle {
-        font-size: 1.25rem;
-        margin-bottom: 40px;
-        opacity: 0;
-        transform: translateY(20px);
-        animation: fadeInUp 1s ease 0.3s forwards;
-        text-align: justify;
-        line-height: 1.8;
-    }
-
-    .hero-buttons {
-        display: flex;
-        gap: 20px;
-        justify-content: center;
-        flex-wrap: wrap;
-        opacity: 0;
-        transform: translateY(20px);
-        animation: fadeInUp 1s ease 0.6s forwards;
-    }
-
     .btn {
         display: inline-flex;
         align-items: center;
@@ -203,119 +144,6 @@
         text-align: justify;
     }
 
-    /* Section Témoignages - Carrousel */
-    .testimonials-section {
-        padding: 2cm;
-        background-color: var(--bg-light);
-        overflow: hidden;
-    }
-
-    .testimonials-container {
-        position: relative;
-        max-width: 900px;
-        margin: 0 auto;
-        overflow: hidden;
-    }
-
-    .testimonials-track {
-        display: flex;
-        transition: transform 0.5s ease;
-        width: max-content;
-    }
-
-    .testimonial-card {
-        background-color: var(--pure-white);
-        padding: 30px;
-        border-radius: var(--border-radius);
-        box-shadow: 0 5px 15px var(--shadow-light);
-        position: relative;
-        transition: var(--transition);
-        min-width: 300px;
-        margin: 0 15px;
-        flex-shrink: 0;
-    }
-
-    .testimonial-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 10px 25px var(--shadow-medium);
-    }
-
-    .testimonial-card::before {
-        content: '"';
-        font-size: 5rem;
-        color: var(--accent-gold);
-        position: absolute;
-        top: -10px;
-        left: 20px;
-        opacity: 0.3;
-        line-height: 1;
-    }
-
-    .testimonial-text {
-        font-style: italic;
-        margin-bottom: 20px;
-        font-size: 1.1rem;
-        line-height: 1.7;
-        text-align: justify;
-    }
-
-    .testimonial-author {
-        display: flex;
-        align-items: center;
-        gap: 15px;
-    }
-
-    .author-avatar {
-        width: 60px;
-        height: 60px;
-        border-radius: 50%;
-        background: linear-gradient(135deg, var(--medium-blue), var(--light-blue));
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: var(--pure-white);
-        font-weight: bold;
-        font-size: 1.2rem;
-    }
-
-    .author-info h4 {
-        color: var(--navy-blue);
-        margin-bottom: 5px;
-        text-align: center;
-    }
-
-    .author-info p {
-        color: var(--text-light);
-        font-size: 0.9rem;
-        text-align: center;
-    }
-
-    .carousel-controls {
-        display: flex;
-        justify-content: center;
-        gap: 15px;
-        margin-top: 30px;
-    }
-
-    .carousel-btn {
-        background-color: var(--navy-blue);
-        color: var(--pure-white);
-        border: none;
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-        transition: var(--transition);
-    }
-
-    .carousel-btn:hover {
-        background-color: var(--accent-gold);
-        color: var(--navy-blue);
-    }
-
     /* Section Actions */
     .actions-section {
         padding: 2cm;
@@ -396,93 +224,46 @@
         color: var(--accent-light);
     }
 
-    /* Section Blog */
-    .blog-section {
+    /* Section Impact */
+    .impact-section {
         padding: 2cm;
-        background-color: var(--bg-light);
-    }
-
-    .blog-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-        gap: 30px;
-    }
-
-    .blog-card {
-        border-radius: var(--border-radius);
-        overflow: hidden;
-        box-shadow: 0 5px 15px var(--shadow-light);
-        transition: var(--transition);
         background-color: var(--pure-white);
     }
 
-    .blog-card:hover {
-        transform: translateY(-10px);
-        box-shadow: 0 15px 30px var(--shadow-medium);
-    }
-
-    .blog-image {
-        height: 200px;
-        background: linear-gradient(135deg, var(--medium-blue), var(--light-blue));
-        display: flex;
+    .impact-content {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 50px;
         align-items: center;
-        justify-content: center;
-        color: var(--pure-white);
-        position: relative;
-        overflow: hidden;
     }
 
-    .blog-image img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
+    .impact-text {
+        padding-right: 20px;
     }
 
-    .blog-image-placeholder {
-        position: absolute;
-        font-size: 3rem;
-        opacity: 0.7;
-    }
-
-    .blog-content {
-        padding: 25px;
-    }
-
-    .blog-date {
-        color: var(--accent-gold);
-        font-size: 0.9rem;
-        margin-bottom: 10px;
-        display: block;
-        text-align: center;
-    }
-
-    .blog-title {
-        font-size: 1.25rem;
+    .impact-text h2 {
+        font-size: 2.25rem;
         color: var(--navy-blue);
-        margin-bottom: 15px;
-        line-height: 1.4;
-        text-align: center;
-    }
-
-    .blog-excerpt {
-        color: var(--text-light);
         margin-bottom: 20px;
+    }
+
+    .impact-text p {
+        color: var(--text-light);
+        margin-bottom: 25px;
         text-align: justify;
+        line-height: 1.7;
     }
 
-    .blog-link {
-        color: var(--accent-gold);
-        font-weight: 600;
-        text-decoration: none;
-        display: inline-flex;
-        align-items: center;
-        gap: 5px;
-        transition: var(--transition);
+    .impact-image {
+        border-radius: var(--border-radius);
+        overflow: hidden;
+        box-shadow: 0 10px 30px var(--shadow-medium);
     }
 
-    .blog-link:hover {
-        gap: 10px;
-        color: var(--accent-light);
+    .impact-image img {
+        width: 100%;
+        height: auto;
+        display: block;
     }
 
     /* Animations */
@@ -504,99 +285,59 @@
         }
     }
 
-    @keyframes infiniteScroll {
-        0% {
-            transform: translateX(0);
-        }
-        100% {
-            transform: translateX(-50%);
-        }
-    }
-
     /* Responsive */
     @media (max-width: 768px) {
-        .hero-section {
-            padding: 1cm;
-        }
-        
-        .hero-content {
-            padding: 1cm;
-        }
-        
         .hero-buttons {
             flex-direction: column;
             align-items: center;
         }
-        
+
         .btn {
             width: 100%;
             max-width: 250px;
         }
-        
+
         .stat-number {
             font-size: 2.5rem;
         }
-        
-        .testimonials-container {
-            grid-template-columns: 1fr;
-        }
-        
+
         .stats-section,
-        .testimonials-section,
         .actions-section,
-        .blog-section {
+        .impact-section {
             padding: 1cm;
+        }
+
+        .impact-content {
+            grid-template-columns: 1fr;
+            gap: 30px;
+        }
+
+        .impact-text {
+            padding-right: 0;
         }
     }
 
     @media (max-width: 480px) {
-        .hero-section {
+        .stats-section,
+        .actions-section,
+        .impact-section {
             padding: 0.5cm;
         }
-        
-        .hero-content {
-            padding: 0.5cm;
-        }
-        
+
         .section-title {
             font-size: 1.75rem;
         }
-        
+
         .stats-grid,
-        .actions-grid,
-        .blog-grid {
+        .actions-grid{
             grid-template-columns: 1fr;
-        }
-        
-        .stats-section,
-        .testimonials-section,
-        .actions-section,
-        .blog-section {
-            padding: 0.5cm;
         }
     }
 </style>
 @endsection
 
 @section('content')
-<!-- Section Hero améliorée -->
-<section class="hero-section">
-    <div class="container">
-        <div class="hero-content">
-            <h1 class="hero-title">Bantou-Foundation</h1>
-            <p class="hero-subtitle">Œuvrons ensemble pour l'éducation, la santé et le développement durable en Afrique. Notre mission est de créer un impact durable dans les communautés africaines en favorisant l'accès à l'éducation, en améliorant les conditions de santé et en promouvant des pratiques de développement durable. À travers nos programmes et initiatives, nous visons à autonomiser les individus et les communautés pour qu'ils puissent construire un avenir meilleur pour eux-mêmes et les générations futures.</p>
-            <div class="hero-buttons">
-                <a href="#" class="btn btn-primary">
-                    <i class="fas fa-handshake"></i> Nous rejoindre
-                </a>
-                <a href="#" class="btn btn-secondary">
-                    <i class="fas fa-heart"></i> Faire un don
-                </a>
-            </div>
-        </div>
-    </div>
-</section>
-
+@include("_partials.hero")
 <!-- Section Chiffres clés -->
 <section class="stats-section">
     <div class="container">
@@ -622,21 +363,20 @@
     </div>
 </section>
 
-<!-- Section Témoignages -->
-<section class="testimonials-section">
+<!-- Section Impact -->
+<section class="impact-section">
     <div class="container">
-        <h2 class="section-title">Témoignages</h2>
-        <div class="testimonials-container">
-            <div class="testimonials-track" id="testimonials-track">
-                <!-- Les témoignages seront dupliqués par JavaScript pour l'effet infini -->
+        <div class="impact-content">
+            <div class="impact-text">
+                <h2>Notre Impact</h2>
+                <p>Depuis notre création, Bantou-Foundation a transformé la vie de milliers de personnes à travers l'Afrique. Nos programmes sont conçus pour créer un changement durable et mesurable dans les communautés que nous servons.</p>
+                <p>Nous croyons en une approche holistique du développement, où l'éducation, la santé et la durabilité environnementale sont interconnectées. Chaque projet que nous mettons en œuvre est le fruit d'une collaboration étroite avec les communautés locales pour garantir sa pertinence et son efficacité à long terme.</p>
+                <a href="#" class="btn btn-primary">
+                    <i class="fas fa-chart-line"></i> Voir notre rapport d'impact
+                </a>
             </div>
-            <div class="carousel-controls">
-                <button class="carousel-btn" id="prev-btn">
-                    <i class="fas fa-chevron-left"></i>
-                </button>
-                <button class="carousel-btn" id="next-btn">
-                    <i class="fas fa-chevron-right"></i>
-                </button>
+            <div class="impact-image">
+                <img src="https://images.unsplash.com/photo-1559027615-cd4628902d4a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" alt="Impact de Bantou-Foundation">
             </div>
         </div>
     </div>
@@ -692,60 +432,7 @@
         </div>
     </div>
 </section>
-
-<!-- Section Blog -->
-<section class="blog-section">
-    <div class="container">
-        <h2 class="section-title">Actualités & Blog</h2>
-        <div class="blog-grid">
-            <div class="blog-card">
-                <div class="blog-image">
-                    <!-- Image en ligne pour le blog éducation -->
-                    <img src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" alt="Méthodologies innovantes pour l'éducation">
-                    <div class="blog-image-placeholder">
-                        <i class="fas fa-book-open"></i>
-                    </div>
-                </div>
-                <div class="blog-content">
-                    <span class="blog-date">10 Février 2026</span>
-                    <h3 class="blog-title">Méthodologies innovantes pour l'éducation</h3>
-                    <p class="blog-excerpt">Découvrez nos conseils pratiques pour les enseignants et parents, ainsi que des récits inspirants de réussite d'enfants soutenus par nos programmes éducatifs. Nous partageons également des stratégies éprouvées pour améliorer l'apprentissage dans des contextes à ressources limitées.</p>
-                    <a href="#" class="blog-link">Lire l'article <i class="fas fa-arrow-right"></i></a>
-                </div>
-            </div>
-            <div class="blog-card">
-                <div class="blog-image">
-                    <!-- Image en ligne pour le blog campagnes -->
-                    <img src="https://images.unsplash.com/photo-1559027615-cd4628902d4a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" alt="Campagnes de sensibilisation">
-                    <div class="blog-image-placeholder">
-                        <i class="fas fa-calendar-alt"></i>
-                    </div>
-                </div>
-                <div class="blog-content">
-                    <span class="blog-date">15 Mars 2026</span>
-                    <h3 class="blog-title">Campagnes de sensibilisation</h3>
-                    <p class="blog-excerpt">Découvrez nos prochaines campagnes dans les quartiers et écoles pour promouvoir la santé et l'environnement. Nous détaillons nos approches participatives qui impliquent activement les communautés dans la conception et la mise en œuvre de nos initiatives de sensibilisation.</p>
-                    <a href="#" class="blog-link">Lire l'article <i class="fas fa-arrow-right"></i></a>
-                </div>
-            </div>
-            <div class="blog-card">
-                <div class="blog-image">
-                    <!-- Image en ligne pour le blog rapport -->
-                    <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" alt="Rapport d'impact 2025">
-                    <div class="blog-image-placeholder">
-                        <i class="fas fa-chart-line"></i>
-                    </div>
-                </div>
-                <div class="blog-content">
-                    <span class="blog-date">5 Avril 2026</span>
-                    <h3 class="blog-title">Rapport d'impact 2025</h3>
-                    <p class="blog-excerpt">Découvrez comment vos dons ont transformé des vies et des communautés à travers l'Afrique. Ce rapport détaillé présente nos réalisations, les leçons apprises et notre vision pour l'avenir, avec des témoignages directs des bénéficiaires de nos programmes.</p>
-                    <a href="#" class="blog-link">Lire l'article <i class="fas fa-arrow-right"></i></a>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
+@include("_partials.blog")
 @endsection
 
 @section('scripts')
@@ -753,7 +440,7 @@
     // Animation des chiffres
     document.addEventListener('DOMContentLoaded', function() {
         const statNumbers = document.querySelectorAll('.stat-number');
-        
+
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
@@ -761,7 +448,7 @@
                     const target = parseInt(numberElement.getAttribute('data-count'));
                     let current = 0;
                     const increment = target / 50;
-                    
+
                     const timer = setInterval(() => {
                         current += increment;
                         if (current >= target) {
@@ -770,122 +457,15 @@
                         }
                         numberElement.textContent = Math.floor(current).toLocaleString();
                     }, 30);
-                    
+
                     observer.unobserve(numberElement);
                 }
             });
         }, { threshold: 0.5 });
-        
+
         statNumbers.forEach(number => {
             observer.observe(number);
         });
-
-        // Carrousel infini pour les témoignages
-        const testimonials = [
-            {
-                text: "Leur travail pour l'environnement m'a inspiré à planter des arbres avec mes voisins. Ensemble, nous avons redonné vie à notre quartier et créé un espace vert où les enfants peuvent jouer en sécurité. L'approche communautaire de Bantou-Foundation a véritablement transformé notre environnement et renforcé les liens entre voisins.",
-                author: "Sammy Minlouka",
-                role: "Partenaire communautaire",
-                initials: "SM"
-            },
-            {
-                text: "Grâce à Bantou-Foundation, j'ai pu envoyer mes enfants à l'école et créer ma petite entreprise de tissage. Aujourd'hui, nous vivons dignement et nos enfants rêvent grand. Le soutien financier et les formations en entrepreneuriat m'ont donné la confiance nécessaire pour développer mon activité et assurer un avenir meilleur à ma famille.",
-                author: "Rowan Stephens",
-                role: "Bénéficiaire",
-                initials: "RS"
-            },
-            {
-                text: "En tant que bénévole, j'ai vu de mes propres yeux l'impact de Bantou-Foundation. Chaque action, même petite, transforme des vies et donne de l'espoir. La transparence de l'organisation et son engagement envers les communautés locales m'ont convaincu de m'impliquer davantage dans leurs projets de développement durable.",
-                author: "Amara Keita",
-                role: "Bénévole",
-                initials: "AK"
-            },
-            {
-                text: "Leur approche holistique du développement communautaire a permis à notre village d'accéder à l'eau potable et à l'électricité solaire. Un véritable changement qui a amélioré la santé de notre communauté et créé de nouvelles opportunités économiques. La consultation régulière des habitants a assuré que les solutions répondent réellement à nos besoins.",
-                author: "Fatou Diop",
-                role: "Cheffe de communauté",
-                initials: "FD"
-            },
-            {
-                text: "Les formations en entrepreneuriat m'ont donné les outils pour lancer ma petite entreprise. Aujourd'hui, j'emploie trois personnes et je suis autonome financièrement. Le mentorat continu et l'accès à un réseau de soutien ont été déterminants pour surmonter les défis du démarrage et assurer la croissance durable de mon entreprise.",
-                author: "Jean Kabeya",
-                role: "Entrepreneur",
-                initials: "JK"
-            }
-        ];
-
-        const track = document.getElementById('testimonials-track');
-        let currentPosition = 0;
-        const cardWidth = 330; // Largeur d'une carte + marge
-        let autoScrollInterval;
-
-        // Fonction pour créer une carte de témoignage
-        function createTestimonialCard(testimonial) {
-            return `
-                <div class="testimonial-card">
-                    <p class="testimonial-text">"${testimonial.text}"</p>
-                    <div class="testimonial-author">
-                        <div class="author-avatar">${testimonial.initials}</div>
-                        <div class="author-info">
-                            <h4>${testimonial.author}</h4>
-                            <p>${testimonial.role}</p>
-                        </div>
-                    </div>
-                </div>
-            `;
-        }
-
-        // Dupliquer les témoignages pour l'effet infini
-        const duplicatedTestimonials = [...testimonials, ...testimonials, ...testimonials];
-        
-        // Ajouter les cartes au track
-        track.innerHTML = duplicatedTestimonials.map(createTestimonialCard).join('');
-
-        // Fonction pour déplacer le carrousel
-        function moveCarousel(direction) {
-            const totalCards = duplicatedTestimonials.length;
-            const maxPosition = -cardWidth * (totalCards - 3); // 3 cartes visibles à la fois
-            
-            if (direction === 'next') {
-                currentPosition -= cardWidth;
-                if (currentPosition < maxPosition) {
-                    // Réinitialiser à la position de départ pour l'effet infini
-                    currentPosition = 0;
-                }
-            } else if (direction === 'prev') {
-                currentPosition += cardWidth;
-                if (currentPosition > 0) {
-                    // Aller à la fin pour l'effet infini
-                    currentPosition = maxPosition;
-                }
-            }
-            
-            track.style.transform = `translateX(${currentPosition}px)`;
-        }
-
-        // Événements pour les boutons de navigation
-        document.getElementById('next-btn').addEventListener('click', () => moveCarousel('next'));
-        document.getElementById('prev-btn').addEventListener('click', () => moveCarousel('prev'));
-
-        // Défilement automatique
-        function startAutoScroll() {
-            autoScrollInterval = setInterval(() => {
-                moveCarousel('next');
-            }, 4000); // Défile toutes les 4 secondes
-        }
-
-        // Arrêter le défilement automatique au survol
-        track.addEventListener('mouseenter', () => {
-            clearInterval(autoScrollInterval);
-        });
-
-        // Reprendre le défilement automatique quand la souris quitte
-        track.addEventListener('mouseleave', () => {
-            startAutoScroll();
-        });
-
-        // Démarrer le défilement automatique
-        startAutoScroll();
     });
 </script>
 @endsection

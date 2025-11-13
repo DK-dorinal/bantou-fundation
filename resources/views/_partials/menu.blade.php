@@ -26,8 +26,8 @@
                     <a href="#valeurs" class="dropdown-item"><i class="fas fa-heart dropdown-icon"></i> Nos Valeurs</a>
                     <a href="#gouvernance" class="dropdown-item"><i class="fas fa-sitemap dropdown-icon"></i>
                         Gouvernance</a>
-                    <a href="#conseil" class="dropdown-item"><i class="fas fa-user-tie dropdown-icon"></i> Conseil
-                        d'administration</a>
+                    {{-- <a href="#conseil" class="dropdown-item"><i class="fas fa-user-tie dropdown-icon"></i> Conseil
+                        d'administration</a> --}}
                 </div>
             </li>
 
@@ -109,6 +109,9 @@
         </button>
     </nav>
 </header>
+<div style="height: 8vh;width:100%;">
+
+</div>
 <style>
     /* Variables CSS - Couleurs Bantou Foundation */
     :root {
