@@ -12,12 +12,12 @@
         <ul class="nav-menu" id="nav-menu" role="menubar">
             {{-- NOTRE IDENTITÉ --}}
             <li class="nav-item" role="none">
-                <a href="" class="nav-link" role="menuitem">
+                <a href="{{ route("identite") }}" class="nav-link" role="menuitem">
                     <i class="fas fa-users nav-icon"></i>
                     Notre Identité
                     <span class="dropdown-arrow"><i class="fas fa-chevron-down"></i></span>
                 </a>
-
+                @if (Route::currentRouteName() == 'identite')
                 <div class="dropdown" role="menu">
                     <a href="#histoire" class="dropdown-item"><i class="fas fa-history dropdown-icon"></i> Histoire &
                         Création</a>
@@ -29,6 +29,7 @@
                     {{-- <a href="#conseil" class="dropdown-item"><i class="fas fa-user-tie dropdown-icon"></i> Conseil
                         d'administration</a> --}}
                 </div>
+                @endif
             </li>
 
             {{-- NOS ACTIONS --}}

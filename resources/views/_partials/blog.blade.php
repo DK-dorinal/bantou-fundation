@@ -286,7 +286,7 @@
         gap: 8px;
         transition: var(--transition);
         position: relative;
-        padding: 8px 0;
+        padding: 10px 15px;
     }
 
     .action-link::after {

@@ -197,16 +197,23 @@
     }
 
     .action-title {
-        font-size: 1.5rem;
+        font-size: 1rem;
         color: var(--navy-blue);
         margin-bottom: 15px;
         text-align: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column
     }
 
     .action-description {
         color: var(--text-light);
         margin-bottom: 20px;
         text-align: justify;
+        height: 25vh;
+        overflow: scroll;
+        scrollbar-width: none;
     }
 
     .action-link {
@@ -217,11 +224,16 @@
         align-items: center;
         gap: 5px;
         transition: var(--transition);
+        cursor: pointer;
+        border: 1px solid var(--accent-gold);
+        padding: 15px 10px 15px 10px;
+        border-radius: 10px;
     }
 
     .action-link:hover {
         gap: 10px;
         color: var(--accent-light);
+        border: 0px solid transparent;
     }
 
     /* Section Blog */
