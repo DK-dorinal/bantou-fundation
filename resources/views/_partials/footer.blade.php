@@ -2,20 +2,20 @@
 <style>
     /* Variables CSS - Couleurs Bantou Foundation */
     :root {
-        --navy-blue: #0f1a3a;
-        --dark-blue: #1a2b55;
-        --medium-blue: #2d4a8a;
-        --light-blue: #3a5fc0;
+        --n-blue: #0f1a3a;
+        --d-blue: #1a2b55;
+        --me-blue: #2d4a8a;
+        --l-blue: #3a5fc0;
         --accent-gold: #d4af37;
-        --accent-light: #e6c34d;
+        --accent-l: #e6c34d;
         --pure-white: #ffffff;
-        --text-dark: #1e293b;
-        --text-light: #fff;
-        --bg-light: #f8fafc;
+        --text-d: #1e293b;
+        --text-l: #fff;
+        --bg-l: #f8fafc;
         --glass-bg: rgba(255, 255, 255, 0.9);
         --glass-bg-strong: rgba(255, 255, 255, 0.95);
-        --shadow-light: rgba(15, 26, 58, 0.1);
-        --shadow-medium: rgba(15, 26, 58, 0.2);
+        --shadow-l: rgba(15, 26, 58, 0.1);
+        --shadow-me: rgba(15, 26, 58, 0.2);
         --shadow-strong: rgba(15, 26, 58, 0.3);
         --border-radius: 8px;
         --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -23,7 +23,7 @@
 
     /* Style général pour le footer */
     .bh-footer {
-        background: var(--navy-blue);
+        background: var(--n-blue);
         color: var(--pure-white);
         font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
         position: relative;
@@ -40,7 +40,7 @@
         left: 0;
         right: 0;
         bottom: 0;
-        background: radial-gradient(circle at 20% 20%, var(--medium-blue) 0%, transparent 50%),
+        background: radial-gradient(circle at 20% 20%, var(--me-blue) 0%, transparent 50%),
             radial-gradient(circle at 80% 80%, var(--accent-gold) 0%, transparent 50%);
         opacity: 0.05;
         pointer-events: none;
@@ -79,7 +79,7 @@
     }
 
     .bh-about-text {
-        color: var(--text-light);
+        color: var(--text-l);
         line-height: 1.6;
         margin-bottom: 1.5rem;
         font-size: 0.95rem;
@@ -123,7 +123,7 @@
     }
 
     .bh-links a {
-        color: var(--text-light);
+        color: var(--text-l);
         text-decoration: none;
         transition: all 0.3s ease;
         display: flex;
@@ -154,7 +154,7 @@
         margin-bottom: 1rem;
         display: flex;
         align-items: flex-start;
-        color: var(--text-light);
+        color: var(--text-l);
         font-size: 0.95rem;
     }
 
@@ -164,7 +164,7 @@
         justify-content: center;
         width: 35px;
         height: 35px;
-        background: var(--medium-blue);
+        background: var(--me-blue);
         border-radius: 50%;
         margin-right: 12px;
         margin-top: 2px;
@@ -181,7 +181,7 @@
     }
 
     .bh-contact-text a {
-        color: var(--text-light);
+        color: var(--text-l);
         text-decoration: none;
         transition: color 0.3s ease;
     }
@@ -204,9 +204,9 @@
         width: 42px;
         height: 42px;
         background: rgba(255, 255, 255, 0.05);
-        border: 1px solid var(--medium-blue);
+        border: 1px solid var(--me-blue);
         border-radius: 8px;
-        color: var(--text-light);
+        color: var(--text-l);
         text-decoration: none;
         transition: all 0.3s ease;
         position: relative;
@@ -220,7 +220,7 @@
         left: 0;
         right: 0;
         bottom: 0;
-        background: var(--medium-blue);
+        background: var(--me-blue);
         opacity: 0;
         transition: opacity 0.3s ease;
     }
@@ -247,7 +247,7 @@
     .bh-newsletter p {
         margin-bottom: 1.5rem;
         line-height: 1.6;
-        color: var(--text-light);
+        color: var(--text-l);
         font-size: 0.95rem;
         text-align: left;
     }
@@ -261,7 +261,7 @@
     .bh-newsletter-input {
         width: 100%;
         padding: 12px 15px;
-        border: 1px solid var(--medium-blue);
+        border: 1px solid var(--me-blue);
         border-radius: 8px;
         background: rgba(255, 255, 255, 0.05);
         color: var(--pure-white);
@@ -285,7 +285,7 @@
         margin-top: 10px;
         padding: 12px;
         background: var(--accent-gold);
-        color: var(--navy-blue);
+        color: var(--n-blue);
         border: none;
         border-radius: 8px;
         font-weight: 600;
@@ -295,14 +295,14 @@
     }
 
     .bh-newsletter-btn:hover {
-        background: var(--accent-light);
+        background: var(--accent-l);
         transform: translateY(-1px);
         box-shadow: 0 5px 15px rgba(212, 175, 55, 0.3);
     }
 
     /* Section bottom */
     .bh-bottom {
-        border-top: 1px solid var(--medium-blue);
+        border-top: 1px solid var(--me-blue);
         padding: 2rem 0 1.5rem;
         display: flex;
         justify-content: space-between;
@@ -312,7 +312,7 @@
     }
 
     .bh-copyright {
-        color: var(--text-light);
+        color: var(--text-l);
         font-size: 0.9rem;
     }
 
