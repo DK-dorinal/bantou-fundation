@@ -72,7 +72,7 @@
 
             {{-- NOUS REJOINDRE --}}
             <li class="nav-item " role="none">
-                <a href="" class="nav-link" role="menuitem">
+                <a href="#" class="nav-link" role="menuitem">
                     <i class="fas fa-handshake nav-icon"></i>
                     Nous Rejoindre
                     <span class="dropdown-arrow"><i class="fas fa-chevron-down"></i></span>

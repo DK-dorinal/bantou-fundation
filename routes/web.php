@@ -18,6 +18,10 @@ Route::get('/blog_actualites', function () {
     return view('blog');
 })->name("blog");
 
+Route::get('/nous_rejoindre', function () {
+    return view('nous_rejoindre');
+})->name("nous_rejoindre");
+
 
 ##ROUTE POUR LA GESTION DES DONS
 Route::get('/faire_un_don', function () {

@@ -29,7 +29,7 @@
         position: relative;
         overflow: hidden;
         border-radius: 10px 10px 0 0;
-        height: 45vh;
+        height: 50vh;
     }
 
     /* Effet de fond subtil */
