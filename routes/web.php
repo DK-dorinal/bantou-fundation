@@ -17,3 +17,18 @@ Route::get('/nos_actions', function () {
 Route::get('/blog_actualites', function () {
     return view('blog');
 })->name("blog");
+
+
+##ROUTE POUR LA GESTION DES DONS
+Route::get('/faire_un_don', function () {
+    return view('don.formulaire_don');
+})->name("don");
+Route::get('/devenir_benevole', function () {
+    return view('don.formulaire_benevole');
+})->name("benevole");
+Route::get('/devenir_partenaire', function () {
+    return view('don.formulaire_partenaire');
+})->name("partenaire");
+Route::get('/adherer_fondation', function () {
+    return view('don.formulaire_adhesion');
+})->name("adhesion");

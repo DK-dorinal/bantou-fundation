@@ -5,7 +5,8 @@
     <nav class="navbar">
         <!-- Logo -->
         <a href="{{ route('home') }}" class="logo" aria-label="Retour à l'accueil Bantou-Foundation">
-            <img src="{{ asset("../asset/img/logo/BFund/logo BH BF-05.png") }}" alt="Logo Bantou Foundation" loading="lazy" />
+            <img src="{{ asset("../asset/img/logo/BFund/logo BH BF-05.png") }}" alt="Logo Bantou Foundation"
+                loading="lazy" />
         </a>
 
         <!-- Menu principal -->
@@ -15,45 +16,50 @@
                 <a href="{{ route("identite") }}" class="nav-link" role="menuitem">
                     <i class="fas fa-users nav-icon"></i>
                     Notre Identité
+                    @if (Route::currentRouteName() == 'identite')
                     <span class="dropdown-arrow"><i class="fas fa-chevron-down"></i></span>
+                    @endif
                 </a>
                 @if (Route::currentRouteName() == 'identite')
-                <div class="dropdown" role="menu">
-                    <a href="#histoire" class="dropdown-item"><i class="fas fa-history dropdown-icon"></i> Histoire &
-                        Création</a>
-                    <a href="#mission" class="dropdown-item"><i class="fas fa-bullseye dropdown-icon"></i> Mission &
-                        Vision</a>
-                    <a href="#valeurs" class="dropdown-item"><i class="fas fa-heart dropdown-icon"></i> Nos Valeurs</a>
-                    <a href="#gouvernance" class="dropdown-item"><i class="fas fa-sitemap dropdown-icon"></i>
-                        Gouvernance</a>
-                    {{-- <a href="#conseil" class="dropdown-item"><i class="fas fa-user-tie dropdown-icon"></i> Conseil
-                        d'administration</a> --}}
-                </div>
+                    <div class="dropdown" role="menu">
+                        <a href="#histoire" class="dropdown-item"><i class="fas fa-history dropdown-icon"></i> Histoire &
+                            Création</a>
+                        <a href="#mission" class="dropdown-item"><i class="fas fa-bullseye dropdown-icon"></i> Mission &
+                            Vision</a>
+                        <a href="#valeurs" class="dropdown-item"><i class="fas fa-heart dropdown-icon"></i> Nos Valeurs</a>
+                        <a href="#gouvernance" class="dropdown-item"><i class="fas fa-sitemap dropdown-icon"></i>
+                            Gouvernance</a>
+                        {{-- <a href="#conseil" class="dropdown-item"><i class="fas fa-user-tie dropdown-icon"></i> Conseil
+                            d'administration</a> --}}
+                    </div>
                 @endif
             </li>
 
             {{-- NOS ACTIONS --}}
             <li class="nav-item" role="none">
-                <a href="" class="nav-link" role="menuitem">
+                <a href="{{ route("action") }}" class="nav-link" role="menuitem">
                     <i class="fas fa-hands-helping nav-icon"></i>
                     Nos Actions
+                    @if (Route::currentRouteName() == 'action')
                     <span class="dropdown-arrow"><i class="fas fa-chevron-down"></i></span>
+                    @endif
                 </a>
-
-                <div class="dropdown" role="menu">
-                    <a href="#education" class="dropdown-item"><i class="fas fa-graduation-cap dropdown-icon"></i>
-                        Éducation & Formation</a>
-                    <a href="#sante" class="dropdown-item"><i class="fas fa-heartbeat dropdown-icon"></i> Santé &
-                        Bien-être</a>
-                    <a href="#developpement" class="dropdown-item"><i class="fas fa-chart-line dropdown-icon"></i>
-                        Développement économique</a>
-                    <a href="#environnement" class="dropdown-item"><i class="fas fa-leaf dropdown-icon"></i>
-                        Environnement & Durabilité</a>
-                    <a href="#projets-realises" class="dropdown-item"><i class="fas fa-check-circle dropdown-icon"></i>
-                        Projets réalisés</a>
-                    <a href="#projets-cours" class="dropdown-item"><i class="fas fa-spinner dropdown-icon"></i> Projets
-                        en cours</a>
-                </div>
+                @if (Route::currentRouteName() == 'action')
+                    <div class="dropdown" role="menu">
+                        <a href="#axes-intervention" class="dropdown-item"><i class="fas fa-graduation-cap dropdown-icon"></i>
+                           Nos Axes d'Intervention</a>
+                        <a href="#chiffres-cles" class="dropdown-item"><i class="fas fa-heartbeat dropdown-icon"></i> Santé &
+                            chiffres-cles</a>
+                        {{-- <a href="#developpement" class="dropdown-item"><i class="fas fa-chart-line dropdown-icon"></i>
+                            Développement économique</a> --}}
+                        {{-- <a href="#environnement" class="dropdown-item"><i class="fas fa-leaf dropdown-icon"></i>
+                            Environnement & Durabilité</a> --}}
+                        <a href="#projets-realises" class="dropdown-item"><i class="fas fa-check-circle dropdown-icon"></i>
+                            Projets réalisés</a>
+                        <a href="#projets-cours" class="dropdown-item"><i class="fas fa-spinner dropdown-icon"></i> Projets
+                            en cours</a>
+                    </div>
+                @endif
             </li>
 
             {{-- BLOG & ACTUALITÉS --}}
@@ -73,21 +79,19 @@
                 </a>
 
                 <div class="dropdown" role="menu">
-                    <a href="" class="dropdown-item"><i
-                            class="fas fa-gift dropdown-icon"></i> Faire un don</a>
-                    <a href="#benevole" class="dropdown-item"><i class="fas fa-hands dropdown-icon"></i> Devenir
+                    <a href="{{ route("don") }}" class="dropdown-item"><i class="fas fa-gift dropdown-icon"></i> Faire un don</a>
+                    <a href="{{ route("benevole") }}" class="dropdown-item"><i class="fas fa-hands dropdown-icon"></i> Devenir
                         bénévole</a>
-                    <a href="#partenaire" class="dropdown-item"><i class="fas fa-handshake dropdown-icon"></i> Devenir
+                    <a href="{{ route("partenaire") }}" class="dropdown-item"><i class="fas fa-handshake dropdown-icon"></i> Devenir
                         partenaire</a>
-                    <a href="#adherer" class="dropdown-item"><i class="fas fa-user-plus dropdown-icon"></i> Adhérer à la
+                    <a href="{{ route("adhesion") }}" class="dropdown-item"><i class="fas fa-user-plus dropdown-icon"></i> Adhérer à la
                         fondation</a>
                 </div>
             </li>
 
             <!-- Bouton Faire un Don (mobile) -->
             <div class="auth-button mobile-auth" style="display: none;">
-                <a href="" class="btn-donate"
-                    aria-label="Faire un don à Bantou-Foundation">
+                <a href="{{ route("don") }}" class="btn-donate" aria-label="Faire un don à Bantou-Foundation">
                     <i class="fas fa-gift btn-icon"></i> Faire un Don
                 </a>
             </div>
@@ -95,8 +99,7 @@
 
         <!-- Bouton Faire un Don (desktop) -->
         <div class="auth-button desktop-auth" style="display: none;">
-            <a href="" class="btn-donate"
-                aria-label="Faire un don à Bantou-Foundation">
+            <a href="" class="btn-donate" aria-label="Faire un don à Bantou-Foundation">
                 <i class="fas fa-gift btn-icon"></i> Faire un Don
             </a>
         </div>
@@ -697,13 +700,13 @@
 </style>
 <script>
     // JavaScript pour le menu hamburger
-    document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function () {
         const hamburger = document.querySelector('.hamburger');
         const navMenu = document.querySelector('.nav-menu');
         const dropdowns = document.querySelectorAll('.dropdown');
 
         // Toggle menu mobile
-        hamburger.addEventListener('click', function() {
+        hamburger.addEventListener('click', function () {
             hamburger.classList.toggle('active');
             navMenu.classList.toggle('active');
         });
@@ -712,7 +715,7 @@
         dropdowns.forEach(dropdown => {
             const link = dropdown.querySelector('.nav-link');
 
-            link.addEventListener('click', function(e) {
+            link.addEventListener('click', function (e) {
                 if (window.innerWidth <= 768) {
                     e.preventDefault();
                     dropdown.classList.toggle('active');
@@ -722,7 +725,7 @@
 
         // Fermer le menu en cliquant sur un lien
         document.querySelectorAll('.nav-link').forEach(link => {
-            link.addEventListener('click', function() {
+            link.addEventListener('click', function () {
                 if (window.innerWidth <= 768) {
                     hamburger.classList.remove('active');
                     navMenu.classList.remove('active');
@@ -732,7 +735,7 @@
         });
 
         // Fermer le menu en redimensionnant la fenêtre
-        window.addEventListener('resize', function() {
+        window.addEventListener('resize', function () {
             if (window.innerWidth > 768) {
                 hamburger.classList.remove('active');
                 navMenu.classList.remove('active');
