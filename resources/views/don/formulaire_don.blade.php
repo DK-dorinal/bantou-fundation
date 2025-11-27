@@ -66,6 +66,7 @@
             overflow: hidden;
             box-shadow: 0 10px 30px var(--shadow-medium);
             animation: fadeInUp 0.8s;
+            margin-top: 12vh;
         }
 
         .illustration-side {
@@ -383,7 +384,7 @@
 
         .donation-amount {
             flex: 1;
-            min-width: 100px;
+            min-width: 120px;
             border: 2px solid var(--bg-light);
             border-radius: var(--border-radius);
             padding: 15px;
@@ -507,6 +508,39 @@
         .impact-message p {
             font-size: 0.9rem;
             color: var(--text-light);
+        }
+
+        .anonymous-donor {
+            margin: 20px 0;
+            padding: 15px;
+            background: rgba(45, 74, 138, 0.05);
+            border-radius: var(--border-radius);
+            border: 1px solid var(--bg-light);
+        }
+
+        .anonymous-checkbox {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .anonymous-checkbox input {
+            margin-right: 10px;
+        }
+
+        .anonymous-checkbox span {
+            font-size: 0.9rem;
+            color: var(--text-dark);
+        }
+
+        .anonymous-info {
+            margin-top: 10px;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: var(--border-radius);
+            font-size: 0.8rem;
+            color: var(--text-light);
+            display: none;
         }
 
         /* Responsive Design */
@@ -646,46 +680,16 @@
                                 <p>Finance un kit scolaire</p>
                             </div>
 
-                            <div class="donation-amount" data-amount="10000">
+                            <div class="donation-amount" data-amount="15000">
                                 <i class="fas fa-graduation-cap"></i>
-                                <h4>10 000 FCFA</h4>
+                                <h4>15 000 FCFA</h4>
                                 <p>Finance une bourse partielle</p>
                             </div>
 
-                            <div class="donation-amount" data-amount="20000">
-                                <i class="fas fa-stethoscope"></i>
-                                <h4>20 000 FCFA</h4>
-                                <p>Finance un kit médical</p>
-                            </div>
-
                             <div class="donation-amount" data-amount="50000">
-                                <i class="fas fa-tree"></i>
-                                <h4>50 000 FCFA</h4>
-                                <p>Finance un projet environnemental</p>
-                            </div>
-
-                            <div class="donation-amount" data-amount="100000">
-                                <i class="fas fa-hands-helping"></i>
-                                <h4>100 000 FCFA</h4>
-                                <p>Finance un micro-projet</p>
-                            </div>
-
-                            <div class="donation-amount" data-amount="500000">
                                 <i class="fas fa-building"></i>
-                                <h4>500 000 FCFA</h4>
+                                <h4>50 000 FCFA</h4>
                                 <p>Finance une infrastructure</p>
-                            </div>
-
-                            <div class="donation-amount" data-amount="1000000">
-                                <i class="fas fa-globe-africa"></i>
-                                <h4>1 000 000 FCFA</h4>
-                                <p>Finance un programme complet</p>
-                            </div>
-
-                            <div class="donation-amount" data-amount="2500000">
-                                <i class="fas fa-hand-holding-heart"></i>
-                                <h4>2 500 000 FCFA</h4>
-                                <p>Finance un projet d'envergure</p>
                             </div>
                         </div>
 
@@ -710,40 +714,52 @@
 
                 <!-- Step 2: Informations personnelles -->
                 <div class="form-step" id="step2">
-                    <div class="form-group">
-                        <label for="name">Nom<span style="color:var(--medium-blue);"> *</span></label>
-                        <input type="text" class="form-control" name="nom" id="name" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="surname">Prénom<span style="color:var(--medium-blue);"> *</span></label>
-                        <input type="text" class="form-control" name="prenom" id="surname" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="email">Adresse Email<span style="color:var(--medium-blue);"> *</span></label>
-                        <div class="input-with-icon">
-                            <input type="email" class="form-control" name="email" id="email" required>
-                            <i class="fas fa-envelope"></i>
+                    <div class="anonymous-donor">
+                        <label class="anonymous-checkbox">
+                            <input type="checkbox" id="anonymousDonor">
+                            <span>Je souhaite faire un don anonyme</span>
+                        </label>
+                        <div class="anonymous-info" id="anonymousInfo">
+                            <i class="fas fa-info-circle"></i> Votre don apparaîtra comme "Donateur anonyme" dans nos registres. Vos informations personnelles resteront confidentielles.
                         </div>
                     </div>
 
-                    <div class="form-group">
-                        <label for="phone">Téléphone</label>
-                        <div class="input-with-icon">
-                            <input type="tel" class="form-control" name="phone" id="phone">
-                            <i class="fas fa-phone"></i>
+                    <div id="donorInfo">
+                        <div class="form-group">
+                            <label for="name">Nom<span style="color:var(--medium-blue);"> *</span></label>
+                            <input type="text" class="form-control" name="nom" id="name" required>
                         </div>
-                    </div>
 
-                    <div class="form-group">
-                        <label for="profession">Profession</label>
-                        <input type="text" class="form-control" name="profession" id="profession">
-                    </div>
+                        <div class="form-group">
+                            <label for="surname">Prénom<span style="color:var(--medium-blue);"> *</span></label>
+                            <input type="text" class="form-control" name="prenom" id="surname" required>
+                        </div>
 
-                    <div class="form-group">
-                        <label for="message">Message d'encouragement (optionnel)</label>
-                        <textarea class="form-control" name="message" id="message" rows="3" placeholder="Votre message de soutien..."></textarea>
+                        <div class="form-group">
+                            <label for="email">Adresse Email<span style="color:var(--medium-blue);"> *</span></label>
+                            <div class="input-with-icon">
+                                <input type="email" class="form-control" name="email" id="email" required>
+                                <i class="fas fa-envelope"></i>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="phone">Téléphone</label>
+                            <div class="input-with-icon">
+                                <input type="tel" class="form-control" name="phone" id="phone">
+                                <i class="fas fa-phone"></i>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="profession">Profession</label>
+                            <input type="text" class="form-control" name="profession" id="profession">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="message">Message d'encouragement (optionnel)</label>
+                            <textarea class="form-control" name="message" id="message" rows="3" placeholder="Votre message de soutien..."></textarea>
+                        </div>
                     </div>
 
                     <div class="form-footer">
@@ -859,9 +875,7 @@
         let currentStep = 1;
         let selectedAmount = 5000;
         let selectedPaymentMethod = null;
-
-        // Récupérer le token CSRF
-        const csrfToken = $('meta[name="csrf-token"]').attr('content');
+        let isAnonymous = false;
 
         // Gestion de la sélection du montant
         $(".donation-amount").on("click", function () {
@@ -883,25 +897,27 @@
             }
         });
 
+        // Gestion du donateur anonyme
+        $("#anonymousDonor").on("change", function () {
+            isAnonymous = $(this).is(":checked");
+            if (isAnonymous) {
+                $("#donorInfo").slideUp(300);
+                $("#anonymousInfo").slideDown(300);
+            } else {
+                $("#donorInfo").slideDown(300);
+                $("#anonymousInfo").slideUp(300);
+            }
+        });
+
         // Mise à jour du message d'impact
         function updateImpactMessage() {
             $("#impactAmount").text(selectedAmount.toLocaleString());
             $("#donationAmountDisplay").text(selectedAmount.toLocaleString() + " FCFA");
 
             let impactDescription = "";
-            if (selectedAmount >= 2500000) {
-                impactDescription = "financer un projet d'envergure pour transformer des communautés entières";
-            } else if (selectedAmount >= 1000000) {
-                impactDescription = "soutenir un programme complet d'éducation ou de santé";
-            } else if (selectedAmount >= 500000) {
+            if (selectedAmount >= 50000) {
                 impactDescription = "construire ou rénover une infrastructure éducative ou médicale";
-            } else if (selectedAmount >= 100000) {
-                impactDescription = "financer un micro-projet générateur de revenus pour une famille";
-            } else if (selectedAmount >= 50000) {
-                impactDescription = "soutenir un projet environnemental comme la plantation d'arbres";
-            } else if (selectedAmount >= 20000) {
-                impactDescription = "fournir des kits médicaux pour des campagnes de santé";
-            } else if (selectedAmount >= 10000) {
+            } else if (selectedAmount >= 15000) {
                 impactDescription = "offrir une bourse partielle pour un étudiant défavorisé";
             } else {
                 impactDescription = "financer un kit scolaire complet pour un enfant";
@@ -960,8 +976,8 @@
                 }
             }
 
-            // Validation de l'étape 2
-            if (step === 3) {
+            // Validation de l'étape 2 (seulement si pas anonyme)
+            if (step === 3 && !isAnonymous) {
                 const requiredFields = [
                     { id: '#name', name: 'Nom' },
                     { id: '#surname', name: 'Prénom' },
@@ -1028,7 +1044,7 @@
             });
         }
 
-        // Soumission du formulaire via AJAX
+        // Soumission du formulaire
         $("#donationForm").on("submit", function (e) {
             e.preventDefault();
 
@@ -1069,111 +1085,73 @@
                 }
             }
 
-            // Afficher le loading
+            // Afficher le récapitulatif
             Swal.fire({
-                title: 'Traitement en cours...',
-                text: 'Veuillez patienter pendant le traitement de votre don',
-                allowOutsideClick: false,
-                showConfirmButton: false,
-                didOpen: () => {
-                    Swal.showLoading();
-                }
-            });
-
-            // Préparer les données du formulaire
-            const formData = {
-                donor_name: $("#name").val().trim(),
-                donor_surname: $("#surname").val().trim(),
-                donor_email: $("#email").val().trim(),
-                donor_phone: $("#phone").val().trim(),
-                donor_profession: $("#profession").val().trim(),
-                donor_message: $("#message").val().trim(),
-                amount: selectedAmount,
-                payment_method: selectedPaymentMethod,
-                payment_number: selectedPaymentMethod === 'orange_money' ? $("#orange_number").val().trim() :
-                              selectedPaymentMethod === 'mtn_money' ? $("#mtn_number").val().trim() : 'none',
-                card_number: selectedPaymentMethod === 'card' ? $("#card_number").val().trim() : 'none',
-                card_expiry: selectedPaymentMethod === 'card' ? $("#card_expiry").val().trim() : 'none',
-                card_cvc: selectedPaymentMethod === 'card' ? $("#card_cvc").val().trim() : 'none',
-                impact_description: $("#impactDescription").text(),
-                _token: csrfToken
-            };
-
-            // URL de soumission
-
-            // Soumission AJAX
-            fetch(url, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': csrfToken,
-                    'X-Requested-With': 'XMLHttpRequest',
-                    'Accept': 'application/json'
-                },
-                body: JSON.stringify(formData)
-            })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                return response.json();
-            })
-            .then(data => {
-                // Fermer le loading
-                Swal.close();
-
-                if (data.success) {
-                    // Succès
-                    showToast('success', 'Merci pour votre don!',
-                        `Votre contribution de ${selectedAmount.toLocaleString()} FCFA a été traitée avec succès.`,
+                title: 'Confirmer votre don',
+                html: `
+                    <div style="text-align: left;">
+                        <p><strong>Montant:</strong> ${selectedAmount.toLocaleString()} FCFA</p>
+                        <p><strong>Mode de paiement:</strong> ${getPaymentMethodName(selectedPaymentMethod)}</p>
+                        <p><strong>Type de don:</strong> ${isAnonymous ? 'Don anonyme' : 'Don nominatif'}</p>
+                        ${!isAnonymous ? `<p><strong>Nom:</strong> ${$("#name").val()} ${$("#surname").val()}</p>` : ''}
+                    </div>
+                `,
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonText: 'Confirmer le don',
+                cancelButtonText: 'Modifier',
+                confirmButtonColor: '#2d4a8a'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Ici vous pouvez ajouter le traitement du paiement
+                    showToast('success', 'Don confirmé!',
+                        `Merci pour votre généreux don de ${selectedAmount.toLocaleString()} FCFA!`,
                         5000);
 
-                    // Redirection vers la page de confirmation après 3 secondes
+                    // Réinitialiser le formulaire après 3 secondes
                     setTimeout(() => {
-                        if (data.redirect_url) {
-                            window.location.href = data.redirect_url;
-                        } else {
-                            //  rien
-                        }
+                        resetForm();
                     }, 3000);
-
-                } else {
-                    // Erreur du serveur
-                    showToast('error', 'Erreur', data.message || 'Une erreur est survenue lors du traitement.');
-
-                    // Afficher les erreurs de validation détaillées
-                    if (data.errors) {
-                        const errorMessages = Object.values(data.errors).flat().join(', ');
-                        showToast('error', 'Erreurs de validation', errorMessages, 6000);
-                    }
                 }
-            })
-            .catch(error => {
-                // Fermer le loading
-                Swal.close();
-
-                console.error('Erreur détaillée:', error);
-
-                // Gestion des erreurs réseau
-                let errorMessage = 'Erreur réseau - Impossible de contacter le serveur';
-
-                if (error.message.includes('419')) {
-                    errorMessage = 'Session expirée. Veuillez rafraîchir la page.';
-                } else if (error.message.includes('404')) {
-                    errorMessage = 'Page non trouvée. Vérifiez l\'URL.';
-                } else if (error.message.includes('500')) {
-                    errorMessage = 'Erreur serveur. Veuillez réessayer plus tard.';
-                }
-
-                showToast('error', 'Erreur technique', errorMessage, 5000);
             });
         });
+
+        function getPaymentMethodName(method) {
+            const methods = {
+                'orange_money': 'Orange Money',
+                'mtn_money': 'MTN Mobile Money',
+                'card': 'Carte Bancaire',
+                'paypal': 'PayPal'
+            };
+            return methods[method] || method;
+        }
+
+        function resetForm() {
+            // Réinitialiser le formulaire
+            $("#donationForm")[0].reset();
+            $(".donation-amount").removeClass("selected");
+            $(".donation-amount[data-amount='5000']").addClass("selected");
+            $(".payment-option").removeClass("selected");
+            $("#payment-details").hide();
+            $("#anonymousDonor").prop("checked", false);
+            $("#donorInfo").show();
+            $("#anonymousInfo").hide();
+
+            // Retourner à l'étape 1
+            goToStep(1);
+
+            // Réinitialiser les variables
+            selectedAmount = 5000;
+            selectedPaymentMethod = null;
+            isAnonymous = false;
+            updateImpactMessage();
+        }
 
         // Initialisation
         updateImpactMessage();
         $(".donation-amount[data-amount='5000']").addClass("selected");
     });
-</script>
+    </script>
 </body>
 </html>
 @endsection
