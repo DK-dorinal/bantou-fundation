@@ -42,3 +42,9 @@ Route::get('/adherer_fondation', function () {
 Route::get('/mon_compte', function () {
     return view('dashboard.user_dashboard');
 })->name("user_dashboard");
+Route::get('/profil', function () {
+    return view('dashboard.profil');
+})->name("user_profil");
+Route::get('/historique', function () {
+    return view('dashboard.historique');
+})->name("historique");

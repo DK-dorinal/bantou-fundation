@@ -1,4 +1,3 @@
-{{-- [file name]: dashboard.blade.php --}}
 @extends('_partials.master')
 
 @section('title', 'Tableau de Bord | Bantou-Foundation')
@@ -313,7 +312,7 @@
                                     partenaire</span>
                             </a>
 
-                            <a href=""
+                            <a href="{{ route('user_profil') }}"
                                 class="group bg-gradient-to-br from-white to-gray-50 rounded-xl p-5 shadow-md hover:shadow-xl transition-all duration-300 border border-gray-100 hover:border-gray-300 text-center">
                                 <div
                                     class="bg-gray-100 text-gray-600 w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-3 group-hover:bg-gray-600 group-hover:text-white transition-colors">
@@ -322,7 +321,7 @@
                                 <span class="font-medium text-gray-700 group-hover:text-gray-700">Mon profil</span>
                             </a>
 
-                            <a href=""
+                            <a href="{{ route('historique') }}"
                                 class="group bg-gradient-to-br from-white to-gray-50 rounded-xl p-5 shadow-md hover:shadow-xl transition-all duration-300 border border-gray-100 hover:border-gray-300 text-center">
                                 <div
                                     class="bg-gray-100 text-gray-600 w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-3 group-hover:bg-gray-600 group-hover:text-white transition-colors">
@@ -562,22 +561,6 @@
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Footer -->
-        <div class="max-w-7xl mx-auto mt-12 pt-8 border-t border-gray-200">
-            <div class="flex flex-col md:flex-row justify-between items-center">
-                <div class="text-gray-500 text-sm mb-4 md:mb-0">
-                    <p>© {{ date('Y') }} Bantou-Foundation. Tous droits réservés.</p>
-                </div>
-                <div class="flex space-x-6">
-                    <a href="#" class="text-gray-500 hover:text-blue-600 text-sm transition-colors">Contact</a>
-                    <a href="#"
-                        class="text-gray-500 hover:text-blue-600 text-sm transition-colors">Confidentialité</a>
-                    <a href="#" class="text-gray-500 hover:text-blue-600 text-sm transition-colors">Conditions</a>
-                    <a href="#" class="text-gray-500 hover:text-blue-600 text-sm transition-colors">Aide</a>
                 </div>
             </div>
         </div>
