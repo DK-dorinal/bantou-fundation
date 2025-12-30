@@ -36,3 +36,9 @@ Route::get('/devenir_partenaire', function () {
 Route::get('/adherer_fondation', function () {
     return view('don.formulaire_adhesion');
 })->name("adhesion");
+
+
+##ROUTES POUR LA GESTIONS DES COMPTES
+Route::get('/mon_compte', function () {
+    return view('dashboard.user_dashboard');
+})->name("user_dashboard");
