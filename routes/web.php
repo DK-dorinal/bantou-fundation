@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ProfileController;
 
 // =============================================
 // ROUTES PUBLIQUES (accessible sans authentification)
@@ -112,9 +113,8 @@ Route::middleware(['auth'])->group(function () {
         return view('dashboard.user_dashboard');
     })->name("user_dashboard");
 
-    Route::get('/profil', function () {
-        return view('dashboard.profil');
-    })->name("user_profil");
+    // Page profil avec le contrôleur
+    Route::get('/profil', [ProfileController::class, 'index'])->name('user_profil');
 
     Route::get('/historique', function () {
         return view('dashboard.historique');
@@ -124,6 +124,29 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard/stats', [DashboardController::class, 'getStats'])->name('dashboard.stats');
     Route::get('/dashboard/tab', [DashboardController::class, 'getTabData'])->name('dashboard.tab');
     Route::get('/dashboard/activities', [DashboardController::class, 'getActivities'])->name('dashboard.activities');
+
+    // =============================================
+    // ROUTES PROFIL (API et actions)
+    // =============================================
+
+    // Mises à jour du profil
+    Route::post('/profile/update-personal', [ProfileController::class, 'updatePersonalInfo'])->name('profile.update.personal');
+    Route::post('/profile/update-phone', [ProfileController::class, 'updatePhone'])->name('profile.update.phone');
+    Route::post('/profile/update-address', [ProfileController::class, 'updateAddress'])->name('profile.update.address');
+    Route::post('/profile/update-avatar', [ProfileController::class, 'updateAvatar'])->name('profile.update.avatar');
+    Route::post('/profile/update-expertise', [ProfileController::class, 'updateExpertise'])->name('profile.update.expertise');
+    Route::post('/profile/update-interests', [ProfileController::class, 'updateInterests'])->name('profile.update.interests');
+    Route::post('/profile/update-availability', [ProfileController::class, 'updateAvailability'])->name('profile.update.availability');
+
+    // Suppression du compte
+    Route::delete('/profile/delete', [ProfileController::class, 'deleteAccount'])->name('profile.delete');
+
+    // Export des données
+    Route::get('/profile/download-data', [ProfileController::class, 'downloadData'])->name('profile.download');
+
+    // API Statistiques et activité
+    Route::get('/profile/stats', [ProfileController::class, 'getStats'])->name('profile.stats');
+    Route::get('/profile/recent-activity', [ProfileController::class, 'getRecentActivity'])->name('profile.recent-activity');
 });
 
 
