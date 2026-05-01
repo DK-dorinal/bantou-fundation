@@ -32,19 +32,42 @@ Route::get('/nous_rejoindre', function () {
 
 
 // =============================================
-// ROUTES D'AUTHENTIFICATION (accessible sans auth)
+// ROUTES D'AUTHENTIFICATION CLASSIQUE (accessible sans auth)
 // =============================================
 
 Route::middleware(['guest'])->group(function () {
+    // Connexion classique avec mot de passe
     Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
     Route::post('/login', [AuthController::class, 'login']);
+
+    // Inscription
     Route::get('/register', [AuthController::class, 'showRegisterForm'])->name('register');
     Route::post('/register', [AuthController::class, 'register']);
+
+    // Mot de passe oublié
     Route::get('/forgot-password', [AuthController::class, 'showForgotForm'])->name('password.request');
     Route::post('/forgot-password', [AuthController::class, 'sendResetLink'])->name('password.email');
     Route::get('/reset-password/{token}', [AuthController::class, 'showResetForm'])->name('password.reset');
     Route::post('/reset-password', [AuthController::class, 'resetPassword'])->name('password.update');
+
+    // =============================================
+    // ROUTES OTP (Connexion sans mot de passe par code magic)
+    // =============================================
+
+    // Envoi du code OTP par email
+    Route::post('/magic-login/send', [AuthController::class, 'sendMagicCode'])->name('magic.login.send');
+
+    // Vérification du code OTP et connexion
+    Route::post('/magic-login/verify', [AuthController::class, 'verifyMagicCode'])->name('magic.login.verify');
+
+    // Renvoi du code OTP
+    Route::post('/magic-login/resend', [AuthController::class, 'resendMagicCode'])->name('magic.login.resend');
 });
+
+// Page de validation du code OTP (accessible même avec une session expirée)
+Route::get('/verify-code', function () {
+    return view('auth.verify-code');
+})->name('verify.code');
 
 
 // =============================================
