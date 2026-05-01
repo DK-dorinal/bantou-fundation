@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="{{ asset('front/asset/css/menu.css') }}">
     <link rel="stylesheet" href="{{ asset('front/asset/css/footer.css') }}">
     <link rel="stylesheet" href="{{ asset('front/asset/css/main.css') }}">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <!-- Styles spécifiques à la page -->
     @yield('styles')

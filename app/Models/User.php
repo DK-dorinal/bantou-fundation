@@ -2,31 +2,62 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
-    /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable;
 
     /**
-     * The attributes that are mass assignable.
+     * Les attributs qui sont assignables en masse.
      *
-     * @var list<string>
+     * @var array<int, string>
      */
     protected $fillable = [
         'name',
         'email',
         'password',
+        'role',
+        'phone',
+        'address',
+        'latitude',
+        'longitude',
+        'birth_date',
+        'gender',
+        'profession',
+        'motivation',
+        'expertise_areas',
+        'membership_type',
+        'id_document',
+        'is_anonymous',
+        'donation_total',
+        'organization_name',
+        'sector',
+        'contact_name',
+        'position',
+        'city_country',
+        'partnership_type',
+        'message',
+        'attachment',
+        'interests',
+        'skills',
+        'experience',
+        'languages',
+        'availability',
+        'engagement',
+        'duration',
+        'expectations',
+        'is_active',
+        'email_verified_at',
     ];
 
     /**
-     * The attributes that should be hidden for serialization.
+     * Les attributs qui doivent être cachés pour la sérialisation.
      *
-     * @var list<string>
+     * @var array<int, string>
      */
     protected $hidden = [
         'password',
@@ -34,15 +65,229 @@ class User extends Authenticatable
     ];
 
     /**
-     * Get the attributes that should be cast.
+     * Les attributs qui doivent être castés.
      *
-     * @return array<string, string>
+     * @var array<string, string>
      */
-    protected function casts(): array
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+        'password' => 'hashed',
+        'birth_date' => 'date',
+        'expertise_areas' => 'array',
+        'interests' => 'array',
+        'skills' => 'array',
+        'latitude' => 'decimal:8',
+        'longitude' => 'decimal:8',
+        'donation_total' => 'decimal:2',
+        'is_active' => 'boolean',
+        'is_anonymous' => 'boolean',
+    ];
+
+    /**
+     * Les rôles disponibles pour les utilisateurs.
+     */
+    const ROLE_DONATEUR = 'donateur';
+    const ROLE_ADHERENT = 'adherent';
+    const ROLE_PARTENAIRE = 'partenaire';
+    const ROLE_BENEVOLE = 'benevole';
+    const ROLE_ADMIN = 'admin';
+
+    /**
+     * Liste de tous les rôles disponibles.
+     *
+     * @return array
+     */
+    public static function getRoles()
     {
         return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
+            self::ROLE_DONATEUR => 'Donateur',
+            self::ROLE_ADHERENT => 'Adhérent',
+            self::ROLE_PARTENAIRE => 'Partenaire',
+            self::ROLE_BENEVOLE => 'Bénévole',
+            self::ROLE_ADMIN => 'Administrateur',
         ];
+    }
+
+    /**
+     * Vérifie si l'utilisateur est un donateur.
+     *
+     * @return bool
+     */
+    public function isDonateur()
+    {
+        return $this->role === self::ROLE_DONATEUR;
+    }
+
+    /**
+     * Vérifie si l'utilisateur est un adhérent.
+     *
+     * @return bool
+     */
+    public function isAdherent()
+    {
+        return $this->role === self::ROLE_ADHERENT;
+    }
+
+    /**
+     * Vérifie si l'utilisateur est un partenaire.
+     *
+     * @return bool
+     */
+    public function isPartenaire()
+    {
+        return $this->role === self::ROLE_PARTENAIRE;
+    }
+
+    /**
+     * Vérifie si l'utilisateur est un bénévole.
+     *
+     * @return bool
+     */
+    public function isBenevole()
+    {
+        return $this->role === self::ROLE_BENEVOLE;
+    }
+
+    /**
+     * Vérifie si l'utilisateur est un administrateur.
+     *
+     * @return bool
+     */
+    public function isAdmin()
+    {
+        return $this->role === self::ROLE_ADMIN;
+    }
+
+    /**
+     * Vérifie si l'utilisateur a un rôle spécifique.
+     *
+     * @param string|array $roles
+     * @return bool
+     */
+    public function hasRole($roles)
+    {
+        if (is_array($roles)) {
+            return in_array($this->role, $roles);
+        }
+        return $this->role === $roles;
+    }
+
+    /**
+     * Scope pour filtrer par rôle.
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param string $role
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeWhereRole($query, $role)
+    {
+        return $query->where('role', $role);
+    }
+
+    /**
+     * Scope pour les donateurs.
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeDonateurs($query)
+    {
+        return $query->where('role', self::ROLE_DONATEUR);
+    }
+
+    /**
+     * Scope pour les adhérents.
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeAdherents($query)
+    {
+        return $query->where('role', self::ROLE_ADHERENT);
+    }
+
+    /**
+     * Scope pour les partenaires.
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopePartenaires($query)
+    {
+        return $query->where('role', self::ROLE_PARTENAIRE);
+    }
+
+    /**
+     * Scope pour les bénévoles.
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeBenevoles($query)
+    {
+        return $query->where('role', self::ROLE_BENEVOLE);
+    }
+
+    /**
+     * Scope pour les utilisateurs actifs.
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeActif($query)
+    {
+        return $query->where('is_active', true);
+    }
+
+    /**
+     * Obtient le libellé du rôle.
+     *
+     * @return string
+     */
+    public function getRoleLabelAttribute()
+    {
+        return self::getRoles()[$this->role] ?? ucfirst($this->role);
+    }
+
+    /**
+     * Obtient le nom complet de l'utilisateur.
+     *
+     * @return string
+     */
+    public function getFullNameAttribute()
+    {
+        return $this->name;
+    }
+
+    /**
+     * Relation avec les dons (si l'utilisateur est donateur).
+     */
+    public function donations()
+    {
+        return $this->hasMany(Donation::class);
+    }
+
+    /**
+     * Relation avec les adhésions (si l'utilisateur est adhérent).
+     */
+    public function membership()
+    {
+        return $this->hasOne(Membership::class);
+    }
+
+    /**
+     * Relation avec les demandes de partenariat.
+     */
+    public function partnershipRequests()
+    {
+        return $this->hasMany(PartnershipRequest::class);
+    }
+
+    /**
+     * Relation avec les candidatures de bénévolat.
+     */
+    public function volunteerApplications()
+    {
+        return $this->hasMany(VolunteerApplication::class);
     }
 }
