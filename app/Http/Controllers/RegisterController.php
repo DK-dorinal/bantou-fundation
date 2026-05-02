@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Schema;
 
 class RegisterController extends Controller
 {
@@ -20,6 +22,12 @@ class RegisterController extends Controller
     public function submit(Request $request)
     {
         try {
+            // Log de débogage
+            Log::info('Soumission formulaire reçue', [
+                'form_type' => $this->getFormType($request),
+                'all_data' => $request->all()
+            ]);
+
             // Valider les champs communs de base (tous optionnels)
             $validatedData = $request->validate([
                 'email' => 'nullable|email|max:255',
@@ -50,25 +58,24 @@ class RegisterController extends Controller
             // Vérifier si c'est un don anonyme
             $isAnonymousDonation = $request->boolean('anonymous_donor') || $request->boolean('is_anonymous');
 
-            // Pour un don anonyme, on ne vérifie pas l'email
+            // Pour un don anonyme
             if ($isAnonymousDonation && $formType === 'donation') {
-                // Créer un email unique pour le donateur anonyme
                 $anonymousEmail = 'anonymous_' . uniqid() . '_' . time() . '@donation.bantou-foundation.org';
                 $userData['email'] = $anonymousEmail;
                 $userData['is_anonymous'] = true;
-
-                // Créer l'utilisateur anonyme
                 $userData['password'] = Hash::make(Str::random(32));
                 $userData['email_verified_at'] = now();
-                $user = User::create($userData);
-                $message = 'Merci pour votre don anonyme ! Votre générosité fait la différence.';
 
-                // Connexion automatique pour les utilisateurs anonymes
+                $user = User::create($userData);
+
+                // CRÉER LE DON
+                $this->createDonationForUser($user, $request);
+
                 auth()->login($user);
 
                 return response()->json([
                     'success' => true,
-                    'message' => $message,
+                    'message' => 'Merci pour votre don anonyme !',
                     'redirect' => route('user_dashboard'),
                     'user' => $user,
                     'form_type' => $formType,
@@ -76,7 +83,7 @@ class RegisterController extends Controller
                 ], 201);
             }
 
-            // Pour les cas non anonymes, vérifier l'email si fourni
+            // Pour les utilisateurs normaux
             $user = null;
             $emailProvided = $request->filled('email') && !empty($request->email);
 
@@ -101,7 +108,6 @@ class RegisterController extends Controller
                 $userData['password'] = Hash::make(Str::random(16));
                 $userData['email_verified_at'] = now();
 
-                // Si pas d'email fourni, créer un email temporaire
                 if (!$emailProvided) {
                     $userData['email'] = 'temp_' . uniqid() . '_' . time() . '@temp.bantou-foundation.org';
                 }
@@ -110,7 +116,17 @@ class RegisterController extends Controller
                 $message = 'Votre inscription a été enregistrée avec succès !';
             }
 
-            // Connexion automatique de l'utilisateur
+            // CRÉER LE DON uniquement si formulaire de don
+            if ($formType === 'donation') {
+                $this->createDonationForUser($user, $request);
+            }
+
+            // CRÉER LA DEMANDE DE PARTENARIAT (si formulaire partenaire)
+            $this->createPartnershipRequest($user, $request);
+
+            // CRÉER LA CANDIDATURE BÉNÉVOLAT (si formulaire bénévole)
+            $this->createVolunteerApplication($user, $request);
+
             auth()->login($user);
 
             return response()->json([
@@ -122,17 +138,136 @@ class RegisterController extends Controller
             ], 201);
 
         } catch (ValidationException $e) {
+            Log::error('Erreur de validation', ['errors' => $e->errors()]);
             return response()->json([
                 'success' => false,
                 'message' => 'Erreur de validation',
                 'errors' => $e->errors()
             ], 422);
         } catch (\Exception $e) {
+            Log::error('Erreur dans submit: ' . $e->getMessage(), [
+                'trace' => $e->getTraceAsString(),
+                'request_data' => $request->all()
+            ]);
             return response()->json([
                 'success' => false,
-                'message' => 'Une erreur est survenue: ' . $e->getMessage(),
-                'error' => $e->getMessage()
+                'message' => 'Une erreur est survenue: ' . $e->getMessage()
             ], 500);
+        }
+    }
+
+    /**
+     * Crée un enregistrement de don après la création de l'utilisateur.
+     * Le donation_total dans la table users est calculé ici uniquement
+     * pour éviter tout double comptage.
+     */
+    private function createDonationForUser($user, Request $request)
+    {
+        $donationAmount = $request->input('donation_amount');
+
+        if ($donationAmount && $donationAmount > 0) {
+            try {
+                if (Schema::hasTable('donations')) {
+                    \DB::table('donations')->insert([
+                        'user_id'    => $user->id,
+                        'amount'     => $donationAmount,
+                        'method'     => $request->input('payment_method', 'Non spécifié'),
+                        'status'     => 'Complété',
+                        'reference'  => 'DON_' . uniqid() . '_' . time(),
+                        'created_at' => now(),
+                        'updated_at' => now()
+                    ]);
+
+                    Log::info('Don créé dans la table donations', [
+                        'user_id' => $user->id,
+                        'amount'  => $donationAmount
+                    ]);
+                } else {
+                    Log::warning('La table donations n\'existe pas', ['user_id' => $user->id]);
+                }
+
+                // ✅ CORRECTION BUG 2 : donation_total est calculé UNE SEULE FOIS ici.
+                // Il ne doit plus être pré-rempli dans getDonationData() pour éviter le doublon.
+                // On recharge le user depuis la BD pour avoir la valeur réelle en base.
+                $user->refresh();
+                $currentTotal = $user->donation_total ?? 0;
+                $user->donation_total = $currentTotal + $donationAmount;
+                $user->save();
+
+                Log::info('Total des dons mis à jour', [
+                    'user_id'   => $user->id,
+                    'added'     => $donationAmount,
+                    'new_total' => $user->donation_total
+                ]);
+
+            } catch (\Exception $e) {
+                Log::error('Erreur lors de la création du don: ' . $e->getMessage(), [
+                    'user_id' => $user->id,
+                    'amount'  => $donationAmount
+                ]);
+            }
+        }
+    }
+
+    /**
+     * Crée une demande de partenariat
+     */
+    private function createPartnershipRequest($user, Request $request)
+    {
+        $formType = $this->getFormType($request);
+
+        if ($formType === 'partnership') {
+            try {
+                if (Schema::hasTable('partnership_requests')) {
+                    \DB::table('partnership_requests')->insert([
+                        'user_id'          => $user->id,
+                        'partnership_type' => $request->input('partnership_type', $request->input('other_partnership_type')),
+                        'organization_name'=> $request->input('organization_name'),
+                        'sector'           => $request->input('sector'),
+                        'message'          => $request->input('message'),
+                        'status'           => 'En attente',
+                        'created_at'       => now(),
+                        'updated_at'       => now()
+                    ]);
+
+                    Log::info('Demande de partenariat créée', ['user_id' => $user->id]);
+                } else {
+                    Log::warning('La table partnership_requests n\'existe pas', ['user_id' => $user->id]);
+                }
+            } catch (\Exception $e) {
+                Log::error('Erreur création partenariat: ' . $e->getMessage());
+            }
+        }
+    }
+
+    /**
+     * Crée une candidature de bénévolat
+     */
+    private function createVolunteerApplication($user, Request $request)
+    {
+        $formType = $this->getFormType($request);
+
+        if ($formType === 'volunteer') {
+            try {
+                if (Schema::hasTable('volunteer_applications')) {
+                    \DB::table('volunteer_applications')->insert([
+                        'user_id'      => $user->id,
+                        'interests'    => is_array($request->input('interests')) ? json_encode($request->input('interests')) : $request->input('interests'),
+                        'skills'       => is_array($request->input('skills')) ? json_encode($request->input('skills')) : $request->input('skills'),
+                        'experience'   => $request->input('experience'),
+                        'availability' => $request->input('availability'),
+                        'status'       => 'En attente',
+                        'created_at'   => now(),
+                        'updated_at'   => now()
+                    ]);
+
+                    Log::info('Candidature bénévolat créée', ['user_id' => $user->id]);
+                } else {
+                    Log::warning('La table volunteer_applications n\'existe pas', ['user_id' => $user->id]);
+                }
+            } catch (\Exception $e) {
+                Log::error('Erreur création bénévolat: ' . $e->getMessage());
+            }
         }
     }
 
@@ -307,7 +442,16 @@ class RegisterController extends Controller
     }
 
     /**
-     * Get data specific to donation form
+     * Get data specific to donation form.
+     *
+     * ✅ CORRECTION BUG 2 : donation_total est RETIRÉ d'ici.
+     * Il était écrit dans $userData puis recalculé dans createDonationForUser(),
+     * ce qui provoquait un double comptage (ex: 5000 + 5000 = 10000 pour un seul don).
+     * La mise à jour de donation_total est désormais gérée UNIQUEMENT dans createDonationForUser().
+     *
+     * ✅ CORRECTION BUG 5 : payment_method est RETIRÉ d'ici.
+     * Ce champ n'est pas dans $fillable du modèle User et appartient à la table donations,
+     * où il est déjà inséré via createDonationForUser().
      */
     private function getDonationData(Request $request)
     {
@@ -317,19 +461,9 @@ class RegisterController extends Controller
         $isAnonymous = $request->boolean('anonymous_donor') || $request->boolean('is_anonymous');
         $data['is_anonymous'] = $isAnonymous;
 
-        // Montant du don
-        if ($request->filled('donation_amount')) {
-            $data['donation_total'] = $request->donation_amount;
-        }
-
         // Message
         if ($request->filled('message')) {
             $data['message'] = $request->message;
-        }
-
-        // Mode de paiement
-        if ($request->filled('payment_method')) {
-            $data['payment_method'] = $request->payment_method;
         }
 
         return $data;
@@ -408,9 +542,9 @@ class RegisterController extends Controller
     private function getRoleFromFormType($formType)
     {
         $roles = [
-            'membership' => 'adherent',
-            'volunteer' => 'benevole',
-            'donation' => 'donateur',
+            'membership'  => 'adherent',
+            'volunteer'   => 'benevole',
+            'donation'    => 'donateur',
             'partnership' => 'partenaire',
         ];
 

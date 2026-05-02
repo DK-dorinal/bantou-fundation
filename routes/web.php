@@ -5,6 +5,7 @@ use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\UserHistoryController;
 
 // =============================================
 // ROUTES PUBLIQUES (accessible sans authentification)
@@ -33,52 +34,6 @@ Route::get('/nous_rejoindre', function () {
 
 
 // =============================================
-// ROUTES D'AUTHENTIFICATION CLASSIQUE (accessible sans auth)
-// =============================================
-
-Route::middleware(['guest'])->group(function () {
-    // Connexion classique avec mot de passe
-    Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
-    Route::post('/login', [AuthController::class, 'login']);
-
-    // Inscription
-    Route::get('/register', [AuthController::class, 'showRegisterForm'])->name('register');
-    Route::post('/register', [AuthController::class, 'register']);
-
-    // Mot de passe oublié
-    Route::get('/forgot-password', [AuthController::class, 'showForgotForm'])->name('password.request');
-    Route::post('/forgot-password', [AuthController::class, 'sendResetLink'])->name('password.email');
-    Route::get('/reset-password/{token}', [AuthController::class, 'showResetForm'])->name('password.reset');
-    Route::post('/reset-password', [AuthController::class, 'resetPassword'])->name('password.update');
-
-    // =============================================
-    // ROUTES OTP (Connexion sans mot de passe par code magic)
-    // =============================================
-
-    // Envoi du code OTP par email
-    Route::post('/magic-login/send', [AuthController::class, 'sendMagicCode'])->name('magic.login.send');
-
-    // Vérification du code OTP et connexion
-    Route::post('/magic-login/verify', [AuthController::class, 'verifyMagicCode'])->name('magic.login.verify');
-
-    // Renvoi du code OTP
-    Route::post('/magic-login/resend', [AuthController::class, 'resendMagicCode'])->name('magic.login.resend');
-});
-
-// Page de validation du code OTP (accessible même avec une session expirée)
-Route::get('/verify-code', function () {
-    return view('auth.verify-code');
-})->name('verify.code');
-
-
-// =============================================
-// ROUTE UNIQUE POUR LA SOUMISSION DES FORMULAIRES
-// =============================================
-
-Route::post('/soumettre-formulaire', [RegisterController::class, 'submit'])->name('form.submit');
-
-
-// =============================================
 // ROUTES D'AFFICHAGE DES FORMULAIRES (publiques)
 // =============================================
 
@@ -100,6 +55,44 @@ Route::get('/adherer_fondation', function () {
 
 
 // =============================================
+// ROUTE UNIQUE POUR LA SOUMISSION DES FORMULAIRES
+// =============================================
+
+Route::post('/soumettre-formulaire', [RegisterController::class, 'submit'])->name('form.submit');
+
+
+// =============================================
+// ROUTES D'AUTHENTIFICATION (accessible sans auth)
+// =============================================
+
+Route::middleware(['guest'])->group(function () {
+    // Connexion classique avec mot de passe
+    Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
+    Route::post('/login', [AuthController::class, 'login']);
+
+    // Inscription
+    Route::get('/register', [AuthController::class, 'showRegisterForm'])->name('register');
+    Route::post('/register', [AuthController::class, 'register']);
+
+    // Mot de passe oublié
+    Route::get('/forgot-password', [AuthController::class, 'showForgotForm'])->name('password.request');
+    Route::post('/forgot-password', [AuthController::class, 'sendResetLink'])->name('password.email');
+    Route::get('/reset-password/{token}', [AuthController::class, 'showResetForm'])->name('password.reset');
+    Route::post('/reset-password', [AuthController::class, 'resetPassword'])->name('password.update');
+
+    // ROUTES OTP (Connexion sans mot de passe par code magic)
+    Route::post('/magic-login/send', [AuthController::class, 'sendMagicCode'])->name('magic.login.send');
+    Route::post('/magic-login/verify', [AuthController::class, 'verifyMagicCode'])->name('magic.login.verify');
+    Route::post('/magic-login/resend', [AuthController::class, 'resendMagicCode'])->name('magic.login.resend');
+});
+
+// Page de validation du code OTP (accessible même avec une session expirée)
+Route::get('/verify-code', function () {
+    return view('auth.verify-code');
+})->name('verify.code');
+
+
+// =============================================
 // ROUTES PROTÉGÉES PAR AUTHENTIFICATION
 // =============================================
 
@@ -108,17 +101,13 @@ Route::middleware(['auth'])->group(function () {
     // Déconnexion
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
-    // Pages du dashboard
+    // =============================================
+    // DASHBOARD PRINCIPAL
+    // =============================================
+
     Route::get('/mon_compte', function () {
         return view('dashboard.user_dashboard');
     })->name("user_dashboard");
-
-    // Page profil avec le contrôleur
-    Route::get('/profil', [ProfileController::class, 'index'])->name('user_profil');
-
-    Route::get('/historique', function () {
-        return view('dashboard.historique');
-    })->name("historique");
 
     // Routes API pour le dashboard (données dynamiques)
     Route::get('/dashboard/stats', [DashboardController::class, 'getStats'])->name('dashboard.stats');
@@ -126,8 +115,11 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard/activities', [DashboardController::class, 'getActivities'])->name('dashboard.activities');
 
     // =============================================
-    // ROUTES PROFIL (API et actions)
+    // GESTION DU PROFIL
     // =============================================
+
+    // Page profil
+    Route::get('/profil', [ProfileController::class, 'index'])->name('user_profil');
 
     // Mises à jour du profil
     Route::post('/profile/update-personal', [ProfileController::class, 'updatePersonalInfo'])->name('profile.update.personal');
@@ -141,12 +133,37 @@ Route::middleware(['auth'])->group(function () {
     // Suppression du compte
     Route::delete('/profile/delete', [ProfileController::class, 'deleteAccount'])->name('profile.delete');
 
-    // Export des données
+    // Export des données personnelles
     Route::get('/profile/download-data', [ProfileController::class, 'downloadData'])->name('profile.download');
 
-    // API Statistiques et activité
+    // API Statistiques et activité récente du profil
     Route::get('/profile/stats', [ProfileController::class, 'getStats'])->name('profile.stats');
     Route::get('/profile/recent-activity', [ProfileController::class, 'getRecentActivity'])->name('profile.recent-activity');
+
+    // =============================================
+    // HISTORIQUE DES ACTIVITÉS
+    // =============================================
+
+    // Page d'affichage de l'historique (correspond à votre fichier historique.blade.php)
+    Route::get('/historique', [UserHistoryController::class, 'index'])->name('historique');
+
+    // API pour les données de l'historique (chargement AJAX avec pagination)
+    Route::get('/historique/data', [UserHistoryController::class, 'getData'])->name('historique.data');
+
+    // Export de l'historique complet
+    Route::get('/historique/export', [UserHistoryController::class, 'export'])->name('historique.export');
+
+    // Export filtré par type
+    Route::get('/historique/export/{type}', [UserHistoryController::class, 'exportByType'])->name('historique.export.type');
+
+    // Téléchargement d'un reçu spécifique
+    Route::get('/historique/receipt/{donationId}', [UserHistoryController::class, 'downloadReceipt'])->name('historique.receipt');
+
+    // Téléchargement d'un certificat de bénévolat
+    Route::get('/historique/certificate/{volunteerId}', [UserHistoryController::class, 'downloadCertificate'])->name('historique.certificate');
+
+    // Détail d'une activité spécifique
+    Route::get('/historique/{type}/{id}', [UserHistoryController::class, 'showDetails'])->name('historique.details');
 });
 
 
@@ -155,7 +172,12 @@ Route::middleware(['auth'])->group(function () {
 // =============================================
 
 Route::middleware(['auth', 'admin'])->group(function () {
+    // Gestion des soumissions de formulaires
     Route::get('/admin/submissions', [RegisterController::class, 'getAllSubmissions'])->name('admin.submissions');
     Route::get('/admin/submissions/{id}', [RegisterController::class, 'getSubmission'])->name('admin.submission.show');
     Route::put('/admin/submissions/{id}/status', [RegisterController::class, 'updateStatus'])->name('admin.submission.status');
+
+    // Administration de l'historique
+    Route::get('/admin/historique', [UserHistoryController::class, 'adminIndex'])->name('admin.historique');
+    Route::get('/admin/historique/user/{userId}', [UserHistoryController::class, 'adminUserHistory'])->name('admin.historique.user');
 });

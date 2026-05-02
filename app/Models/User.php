@@ -57,7 +57,7 @@ class User extends Authenticatable
     /**
      * Les attributs qui doivent être cachés pour la sérialisation.
      *
-     * @var array<int, string>
+     * @var array<string, string>
      */
     protected $hidden = [
         'password',
@@ -86,11 +86,11 @@ class User extends Authenticatable
     /**
      * Les rôles disponibles pour les utilisateurs.
      */
-    const ROLE_DONATEUR = 'donateur';
-    const ROLE_ADHERENT = 'adherent';
+    const ROLE_DONATEUR  = 'donateur';
+    const ROLE_ADHERENT  = 'adherent';
     const ROLE_PARTENAIRE = 'partenaire';
-    const ROLE_BENEVOLE = 'benevole';
-    const ROLE_ADMIN = 'admin';
+    const ROLE_BENEVOLE  = 'benevole';
+    const ROLE_ADMIN     = 'admin';
 
     /**
      * Liste de tous les rôles disponibles.
@@ -100,60 +100,50 @@ class User extends Authenticatable
     public static function getRoles()
     {
         return [
-            self::ROLE_DONATEUR => 'Donateur',
-            self::ROLE_ADHERENT => 'Adhérent',
+            self::ROLE_DONATEUR   => 'Donateur',
+            self::ROLE_ADHERENT   => 'Adhérent',
             self::ROLE_PARTENAIRE => 'Partenaire',
-            self::ROLE_BENEVOLE => 'Bénévole',
-            self::ROLE_ADMIN => 'Administrateur',
+            self::ROLE_BENEVOLE   => 'Bénévole',
+            self::ROLE_ADMIN      => 'Administrateur',
         ];
     }
 
     /**
      * Vérifie si l'utilisateur est un donateur.
-     *
-     * @return bool
      */
-    public function isDonateur()
+    public function isDonateur(): bool
     {
         return $this->role === self::ROLE_DONATEUR;
     }
 
     /**
      * Vérifie si l'utilisateur est un adhérent.
-     *
-     * @return bool
      */
-    public function isAdherent()
+    public function isAdherent(): bool
     {
         return $this->role === self::ROLE_ADHERENT;
     }
 
     /**
      * Vérifie si l'utilisateur est un partenaire.
-     *
-     * @return bool
      */
-    public function isPartenaire()
+    public function isPartenaire(): bool
     {
         return $this->role === self::ROLE_PARTENAIRE;
     }
 
     /**
      * Vérifie si l'utilisateur est un bénévole.
-     *
-     * @return bool
      */
-    public function isBenevole()
+    public function isBenevole(): bool
     {
         return $this->role === self::ROLE_BENEVOLE;
     }
 
     /**
      * Vérifie si l'utilisateur est un administrateur.
-     *
-     * @return bool
      */
-    public function isAdmin()
+    public function isAdmin(): bool
     {
         return $this->role === self::ROLE_ADMIN;
     }
@@ -162,9 +152,8 @@ class User extends Authenticatable
      * Vérifie si l'utilisateur a un rôle spécifique.
      *
      * @param string|array $roles
-     * @return bool
      */
-    public function hasRole($roles)
+    public function hasRole($roles): bool
     {
         if (is_array($roles)) {
             return in_array($this->role, $roles);
@@ -174,10 +163,6 @@ class User extends Authenticatable
 
     /**
      * Scope pour filtrer par rôle.
-     *
-     * @param \Illuminate\Database\Eloquent\Builder $query
-     * @param string $role
-     * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopeWhereRole($query, $role)
     {
@@ -186,9 +171,6 @@ class User extends Authenticatable
 
     /**
      * Scope pour les donateurs.
-     *
-     * @param \Illuminate\Database\Eloquent\Builder $query
-     * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopeDonateurs($query)
     {
@@ -197,9 +179,6 @@ class User extends Authenticatable
 
     /**
      * Scope pour les adhérents.
-     *
-     * @param \Illuminate\Database\Eloquent\Builder $query
-     * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopeAdherents($query)
     {
@@ -208,9 +187,6 @@ class User extends Authenticatable
 
     /**
      * Scope pour les partenaires.
-     *
-     * @param \Illuminate\Database\Eloquent\Builder $query
-     * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopePartenaires($query)
     {
@@ -219,9 +195,6 @@ class User extends Authenticatable
 
     /**
      * Scope pour les bénévoles.
-     *
-     * @param \Illuminate\Database\Eloquent\Builder $query
-     * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopeBenevoles($query)
     {
@@ -230,9 +203,6 @@ class User extends Authenticatable
 
     /**
      * Scope pour les utilisateurs actifs.
-     *
-     * @param \Illuminate\Database\Eloquent\Builder $query
-     * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopeActif($query)
     {
@@ -241,20 +211,16 @@ class User extends Authenticatable
 
     /**
      * Obtient le libellé du rôle.
-     *
-     * @return string
      */
-    public function getRoleLabelAttribute()
+    public function getRoleLabelAttribute(): string
     {
         return self::getRoles()[$this->role] ?? ucfirst($this->role);
     }
 
     /**
      * Obtient le nom complet de l'utilisateur.
-     *
-     * @return string
      */
-    public function getFullNameAttribute()
+    public function getFullNameAttribute(): string
     {
         return $this->name;
     }

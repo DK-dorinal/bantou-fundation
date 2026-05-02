@@ -656,9 +656,17 @@
                 </div>
             </div>
 
-            <!-- FORMULAIRE CORRIGÉ - ACTION et CSRF ajoutés -->
+            <!-- FORMULAIRE COMPLET -->
             <form method="POST" action="{{ route('form.submit') }}" id="donationForm" enctype="multipart/form-data">
                 @csrf
+
+                <!-- ============================================ -->
+                <!-- CHAMPS CACHÉS OBLIGATOIRES POUR LE SERVEUR  -->
+                <!-- ============================================ -->
+                <input type="hidden" name="donation_amount" id="donation_amount_input" value="5000">
+                <input type="hidden" name="payment_method" id="payment_method_input" value="">
+                <input type="hidden" name="donation_type" value="don">
+                <input type="hidden" name="is_anonymous" id="is_anonymous_input" value="0">
 
                 <!-- Step 1: Montant du don -->
                 <div class="form-step active" id="step1">
@@ -666,7 +674,7 @@
                         <label>Sélectionnez le montant de votre don<span style="color:var(--medium-blue);"> *</span></label>
 
                         <div class="donation-options">
-                            <div class="donation-amount" data-amount="5000">
+                            <div class="donation-amount selected" data-amount="5000">
                                 <i class="fas fa-book"></i>
                                 <h4>5 000 FCFA</h4>
                                 <p>Finance un kit scolaire</p>
@@ -708,7 +716,9 @@
                 <div class="form-step" id="step2">
                     <div class="anonymous-donor">
                         <label class="anonymous-checkbox">
-                            <input type="checkbox" id="anonymousDonor">
+                            {{-- ✅ CORRECTION BUG 4 : ajout de name="anonymous_donor" et value="1"
+                                 Sans name=, le champ n'est jamais transmis en POST --}}
+                            <input type="checkbox" id="anonymousDonor" name="anonymous_donor" value="1">
                             <span>Je souhaite faire un don anonyme</span>
                         </label>
                         <div class="anonymous-info" id="anonymousInfo">
@@ -719,18 +729,18 @@
                     <div id="donorInfo">
                         <div class="form-group">
                             <label for="name">Nom<span style="color:var(--medium-blue);"> *</span></label>
-                            <input type="text" class="form-control" name="nom" id="name">
+                            <input type="text" class="form-control" name="nom" id="name" required>
                         </div>
 
                         <div class="form-group">
                             <label for="surname">Prénom<span style="color:var(--medium-blue);"> *</span></label>
-                            <input type="text" class="form-control" name="prenom" id="surname">
+                            <input type="text" class="form-control" name="prenom" id="surname" required>
                         </div>
 
                         <div class="form-group">
                             <label for="email">Adresse Email<span style="color:var(--medium-blue);"> *</span></label>
                             <div class="input-with-icon">
-                                <input type="email" class="form-control" name="email" id="email">
+                                <input type="email" class="form-control" name="email" id="email" required>
                                 <i class="fas fa-envelope"></i>
                             </div>
                         </div>
@@ -764,12 +774,12 @@
                 <div class="form-step" id="step3">
                     <div class="form-group">
                         <label>Sélectionnez votre mode de paiement<span style="color:var(--medium-blue);"> *</span></label>
-                        <p style="margin-bottom: 15px; font-size: 0.9rem;">Montant du don: <span class="payment-amount" id="donationAmountDisplay">5 000 FCFA</span></p>
+                        <p style="margin-bottom: 15px; font-size: 0.9rem;">Montant du don: <strong class="payment-amount" id="donationAmountDisplay">5 000 FCFA</strong></p>
 
                         <div class="payment-options">
                             <div class="payment-option" data-value="orange_money">
                                 <div class="payment-icon">
-                                    <img src="{{asset('./front/paiement/OM.png')}}" style="width:40px;">
+                                    <img src="{{asset('./front/paiement/OM.png')}}" style="width:40px;" alt="Orange Money">
                                 </div>
                                 <div class="payment-details">
                                     <h4>Orange Money</h4>
@@ -779,7 +789,7 @@
 
                             <div class="payment-option" data-value="mtn_money">
                                 <div class="payment-icon">
-                                    <img src="{{asset('./front/paiement/MOMO.png')}}" style="width:40px;">
+                                    <img src="{{asset('./front/paiement/MOMO.png')}}" style="width:40px;" alt="MTN Money">
                                 </div>
                                 <div class="payment-details">
                                     <h4>MTN Mobile Money</h4>
@@ -789,7 +799,7 @@
 
                             <div class="payment-option" data-value="card">
                                 <div class="payment-icon">
-                                    <img src="{{asset('./front/paiement/cart.png')}}" style="width:40px;">
+                                    <img src="{{asset('./front/paiement/cart.png')}}" style="width:40px;" alt="Carte Bancaire">
                                 </div>
                                 <div class="payment-details">
                                     <h4>Carte Bancaire</h4>
@@ -807,7 +817,6 @@
                                 </div>
                             </div>
                         </div>
-                        <input type="hidden" name="payment_method" id="payment_method">
                     </div>
 
                     <div class="form-group" id="payment-details" style="display: none;">
@@ -848,7 +857,7 @@
 
                     <div class="form-footer">
                         <button type="button" class="btn btn-outline" onclick="prevStep(2)"><i class="fas fa-arrow-left"></i> Précédent</button>
-                        <button type="submit" class="btn btn-primary">Faire un Don <i class="fas fa-heart"></i></button>
+                        <button type="submit" class="btn btn-primary" id="submitDonation">Faire un Don <i class="fas fa-heart"></i></button>
                     </div>
                 </div>
             </form>
@@ -871,7 +880,7 @@ $(document).ready(function () {
     $(".donation-amount").on("click", function () {
         $(".donation-amount").removeClass("selected");
         $(this).addClass("selected");
-        selectedAmount = $(this).data("amount");
+        selectedAmount = parseInt($(this).data("amount"));
         updateImpactMessage();
         $("#customAmount").val('');
     });
@@ -879,9 +888,9 @@ $(document).ready(function () {
     // Gestion du montant personnalisé
     $("#customAmount").on("input", function () {
         const customAmount = $(this).val();
-        if (customAmount) {
+        if (customAmount && parseInt(customAmount) > 0) {
             $(".donation-amount").removeClass("selected");
-            selectedAmount = parseInt(customAmount) || 0;
+            selectedAmount = parseInt(customAmount);
             updateImpactMessage();
         }
     });
@@ -892,13 +901,13 @@ $(document).ready(function () {
         if (isAnonymous) {
             $("#donorInfo").slideUp(300);
             $("#anonymousInfo").slideDown(300);
-            // Supprimer l'attribut required
             $("#name, #surname, #email").removeAttr('required');
+            $("#is_anonymous_input").val('1');
         } else {
             $("#donorInfo").slideDown(300);
             $("#anonymousInfo").slideUp(300);
-            // Ajouter l'attribut required
             $("#name, #surname, #email").attr('required', 'required');
+            $("#is_anonymous_input").val('0');
         }
     });
 
@@ -906,6 +915,11 @@ $(document).ready(function () {
     function updateImpactMessage() {
         $("#impactAmount").text(selectedAmount.toLocaleString());
         $("#donationAmountDisplay").text(selectedAmount.toLocaleString() + " FCFA");
+
+        // Mettre à jour le champ caché donation_amount
+        $("#donation_amount_input").val(selectedAmount);
+
+        console.log('Montant mis à jour:', selectedAmount);
 
         let impactDescription = "";
         if (selectedAmount >= 50000) {
@@ -923,7 +937,11 @@ $(document).ready(function () {
         $(".payment-option").removeClass("selected");
         $(this).addClass("selected");
         selectedPaymentMethod = $(this).data("value");
-        $("#payment_method").val(selectedPaymentMethod);
+
+        // Mettre à jour le champ caché payment_method
+        $("#payment_method_input").val(selectedPaymentMethod);
+
+        console.log('Méthode de paiement sélectionnée:', selectedPaymentMethod);
 
         // Afficher les détails de paiement
         $("#payment-details > div").hide();
@@ -1004,18 +1022,44 @@ $(document).ready(function () {
         });
     }
 
-    // SOUMISSION CORRIGÉE
+    // SOUMISSION
     $("#donationForm").on("submit", function (e) {
         e.preventDefault();
+
+        // Vérifications finales
+        if (selectedAmount <= 0) {
+            showToast('warning', 'Montant requis', 'Veuillez sélectionner un montant de don.');
+            return;
+        }
 
         if (!selectedPaymentMethod) {
             showToast('warning', 'Méthode de paiement requise', 'Veuillez sélectionner une méthode de paiement.');
             return;
         }
 
+        // S'assurer que les champs cachés sont à jour
+        $("#donation_amount_input").val(selectedAmount);
+        $("#payment_method_input").val(selectedPaymentMethod);
+
         var formData = new FormData(this);
-        formData.append('donation_amount', selectedAmount);
-        formData.append('donation_type', 'don');
+
+        // Forcer les valeurs dans FormData
+        formData.set('donation_amount', selectedAmount);
+        formData.set('payment_method', selectedPaymentMethod);
+
+        // LOG DE DÉBOGAGE
+        console.log('=== SOUMISSION FORMULAIRE ===');
+        console.log('donation_amount:', selectedAmount);
+        console.log('payment_method:', selectedPaymentMethod);
+        console.log('is_anonymous:', isAnonymous);
+        console.log('nom:', $("#name").val());
+        console.log('prenom:', $("#surname").val());
+        console.log('email:', $("#email").val());
+
+        console.log('=== FORM DATA ===');
+        for (var pair of formData.entries()) {
+            console.log(pair[0] + ': ' + pair[1]);
+        }
 
         Swal.fire({
             title: 'Envoi en cours...',
@@ -1035,28 +1079,34 @@ $(document).ready(function () {
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             },
-// Dans la fonction success de chaque formulaire
-success: function(response) {
-    Swal.fire({
-        icon: 'success',
-        title: 'Succès!',
-        text: response.message,
-        confirmButtonColor: '#2d4a8a'
-    }).then(() => {
-        // Redirection vers le dashboard
-        if (response.redirect) {
-            window.location.href = response.redirect;
-        } else {
-            window.location.href = "{{ route('user_dashboard') }}";
-        }
-    });
-},
+            success: function(response) {
+                console.log('=== RÉPONSE SUCCÈS ===', response);
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Succès!',
+                    text: response.message,
+                    confirmButtonColor: '#2d4a8a'
+                }).then(() => {
+                    if (response.redirect) {
+                        window.location.href = response.redirect;
+                    } else {
+                        window.location.href = "{{ route('user_dashboard') }}";
+                    }
+                });
+            },
             error: function(xhr) {
+                console.error('=== ERREUR ===');
+                console.error('Status:', xhr.status);
+                console.error('Response:', xhr.responseText);
                 Swal.close();
-                let errorMessage = 'Une erreur est survenue lors de l\'enregistrement.';
+
+                let errorMessage = 'Une erreur est survenue.';
                 if (xhr.responseJSON && xhr.responseJSON.message) {
                     errorMessage = xhr.responseJSON.message;
+                } else if (xhr.responseText) {
+                    errorMessage = xhr.responseText.substring(0, 200);
                 }
+
                 Swal.fire({
                     icon: 'error',
                     title: 'Erreur',
@@ -1069,7 +1119,6 @@ success: function(response) {
 
     // Initialisation
     updateImpactMessage();
-    $(".donation-amount[data-amount='5000']").addClass("selected");
 });
 </script>
 @endsection
