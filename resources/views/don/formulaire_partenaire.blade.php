@@ -215,7 +215,7 @@
 
     <div class="form-side">
         <div class="logo-volunteer">
-            <img src="{{ asset('images/logo.png') }}" onclick="window.location.href='{{ route('home') }}'">
+            <img src="{{ asset('asset/img/logo/BFund/logo BH BF-05.png') }}" onclick="window.location.href='{{ route('home') }}'">
         </div>
         <div class="form-header">
             <h3>Devenir Bénévole</h3>
@@ -346,32 +346,33 @@
 $(document).ready(function() {
     let currentStep = 1;
 
+    // Gestion des checkboxes compétences
     $(".skill-checkbox").click(function() {
         $(this).toggleClass("selected");
         $(this).find('input').prop("checked", $(this).hasClass("selected"));
     });
 
+    // Gestion des options de disponibilité
     $(".availability-option").click(function() {
         $(".availability-option").removeClass("selected");
         $(this).addClass("selected");
         $(this).find('input').prop("checked", true);
     });
 
-    window.nextStep = function(step) {
-        if (step === 2) {
-            if (!$("#nom").val().trim()) return showToast('warning', 'Champ manquant', 'Nom requis');
-            if (!$("#prenom").val().trim()) return showToast('warning', 'Champ manquant', 'Prénom requis');
-            if (!$("#email").val().trim()) return showToast('warning', 'Champ manquant', 'Email requis');
-            if (!$("#phone").val().trim()) return showToast('warning', 'Champ manquant', 'Téléphone requis');
-        }
-        if (step === 3) {
-            if ($('input[name="interests[]"]:checked').length === 0) return showToast('warning', 'Domaine requis', 'Sélectionnez un domaine');
-        }
-        goToStep(step);
-    };
+    // Fonction pour afficher les notifications
+    function showToast(icon, title, text) {
+        Swal.fire({
+            icon: icon,
+            title: title,
+            text: text,
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 4000
+        });
+    }
 
-    window.prevStep = function(step) { goToStep(step); };
-
+    // Fonction pour changer d'étape
     function goToStep(step) {
         $(".form-step").removeClass("active");
         $("#step" + step).addClass("active");
@@ -382,17 +383,44 @@ $(document).ready(function() {
         window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    function showToast(icon, title, text) {
-        Swal.fire({ icon, title, text, toast: true, position: 'top-end', showConfirmButton: false, timer: 4000 });
-    }
+    // Fonctions globales
+    window.nextStep = function(step) {
+        if (step === 2) {
+            if (!$("#nom").val().trim()) return showToast('warning', 'Champ manquant', 'Nom requis');
+            if (!$("#prenom").val().trim()) return showToast('warning', 'Champ manquant', 'Prénom requis');
+            if (!$("#email").val().trim()) return showToast('warning', 'Champ manquant', 'Email requis');
+            if (!$("#phone").val().trim()) return showToast('warning', 'Champ manquant', 'Téléphone requis');
+        }
+        if (step === 3) {
+            if ($('input[name="interests[]"]:checked').length === 0) return showToast('warning', 'Domaine requis', 'Sélectionnez au moins un domaine d\'intérêt');
+        }
+        goToStep(step);
+    };
 
+    window.prevStep = function(step) {
+        goToStep(step);
+    };
+
+    // Soumission du formulaire
     $("#volunteerForm").submit(function(e) {
         e.preventDefault();
-        if (!$("#motivation").val().trim()) return showToast('warning', 'Champ manquant', 'Motivation requise');
-        if (!$('input[name="availability"]:checked').val()) return showToast('warning', 'Champ manquant', 'Disponibilité requise');
+
+        if (!$("#motivation").val().trim()) {
+            return showToast('warning', 'Champ manquant', 'Veuillez remplir le champ motivation');
+        }
+        if (!$('input[name="availability"]:checked').val()) {
+            return showToast('warning', 'Champ manquant', 'Veuillez sélectionner votre disponibilité');
+        }
 
         var formData = new FormData(this);
-        Swal.fire({ title: 'Envoi...', allowOutsideClick: false, didOpen: () => Swal.showLoading() });
+
+        Swal.fire({
+            title: 'Envoi en cours...',
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading();
+            }
+        });
 
         $.ajax({
             url: "{{ route('form.submit') }}",
@@ -400,15 +428,28 @@ $(document).ready(function() {
             data: formData,
             processData: false,
             contentType: false,
-            headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
             success: function(response) {
-                Swal.fire({ icon: 'success', title: 'Succès!', text: response.message, confirmButtonColor: '#2d4a8a' })
-                    .then(() =>window.location.href = "{{ route('user_dashboard') }}";
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Succès!',
+                    text: response.message || 'Votre candidature a été envoyée avec succès.',
+                    confirmButtonColor: '#2d4a8a'
+                }).then(() => {
+                    window.location.href = "{{ route('user_dashboard') }}";
+                });
             },
             error: function(xhr) {
                 Swal.close();
-                let msg = xhr.responseJSON?.message || 'Erreur serveur';
-                Swal.fire({ icon: 'error', title: 'Erreur', text: msg, confirmButtonColor: '#2d4a8a' });
+                let msg = xhr.responseJSON?.message || 'Une erreur est survenue. Veuillez réessayer.';
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Erreur',
+                    text: msg,
+                    confirmButtonColor: '#2d4a8a'
+                });
             }
         });
     });

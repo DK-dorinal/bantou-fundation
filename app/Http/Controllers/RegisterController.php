@@ -129,10 +129,13 @@ class RegisterController extends Controller
 
             auth()->login($user);
 
+            // Déterminer l'URL de redirection selon le type d'utilisateur
+            $redirectUrl = $this->getRedirectUrl($formType, $user);
+
             return response()->json([
                 'success' => true,
                 'message' => $message,
-                'redirect' => route('user_dashboard'),
+                'redirect' => $redirectUrl,
                 'user' => $user,
                 'form_type' => $formType
             ], 201);
@@ -157,9 +160,51 @@ class RegisterController extends Controller
     }
 
     /**
+     * Détermine l'URL de redirection selon le type d'utilisateur
+     *
+     * @param string $formType
+     * @param User $user
+     * @return string
+     */
+    private function getRedirectUrl($formType, $user)
+    {
+        // Redirection spécifique pour les partenaires
+        if ($formType === 'partnership') {
+            // Message de bienvenue pour le partenaire
+            session()->flash('welcome_message', 'Bienvenue dans votre espace partenaire ! Votre demande a été enregistrée avec succès.');
+            return route('user_dashboard');
+        }
+
+        // Redirection spécifique pour les adhérents
+        if ($formType === 'membership') {
+            session()->flash('welcome_message', 'Bienvenue cher adhérent ! Merci de votre engagement.');
+            return route('user_dashboard');
+        }
+
+        // Redirection spécifique pour les bénévoles
+        if ($formType === 'volunteer') {
+            session()->flash('welcome_message', 'Merci de vous être engagé comme bénévole !');
+            return route('user_dashboard');
+        }
+
+        // Redirection spécifique pour les donateurs
+        if ($formType === 'donation') {
+            session()->flash('welcome_message', 'Merci infiniment pour votre généreux don !');
+            return route('user_dashboard');
+        }
+
+        // Redirection par défaut
+        return route('user_dashboard');
+    }
+
+    /**
      * Crée un enregistrement de don après la création de l'utilisateur.
      * Le donation_total dans la table users est calculé ici uniquement
      * pour éviter tout double comptage.
+     *
+     * @param User $user
+     * @param Request $request
+     * @return void
      */
     private function createDonationForUser($user, Request $request)
     {
@@ -186,9 +231,7 @@ class RegisterController extends Controller
                     Log::warning('La table donations n\'existe pas', ['user_id' => $user->id]);
                 }
 
-                // ✅ CORRECTION BUG 2 : donation_total est calculé UNE SEULE FOIS ici.
-                // Il ne doit plus être pré-rempli dans getDonationData() pour éviter le doublon.
-                // On recharge le user depuis la BD pour avoir la valeur réelle en base.
+                // Mise à jour du total des dons
                 $user->refresh();
                 $currentTotal = $user->donation_total ?? 0;
                 $user->donation_total = $currentTotal + $donationAmount;
@@ -211,6 +254,10 @@ class RegisterController extends Controller
 
     /**
      * Crée une demande de partenariat
+     *
+     * @param User $user
+     * @param Request $request
+     * @return void
      */
     private function createPartnershipRequest($user, Request $request)
     {
@@ -242,6 +289,10 @@ class RegisterController extends Controller
 
     /**
      * Crée une candidature de bénévolat
+     *
+     * @param User $user
+     * @param Request $request
+     * @return void
      */
     private function createVolunteerApplication($user, Request $request)
     {
@@ -344,6 +395,9 @@ class RegisterController extends Controller
 
     /**
      * Get data specific to membership form
+     *
+     * @param Request $request
+     * @return array
      */
     private function getMembershipData(Request $request)
     {
@@ -382,6 +436,9 @@ class RegisterController extends Controller
 
     /**
      * Get data specific to volunteer form
+     *
+     * @param Request $request
+     * @return array
      */
     private function getVolunteerData(Request $request)
     {
@@ -444,14 +501,8 @@ class RegisterController extends Controller
     /**
      * Get data specific to donation form.
      *
-     * ✅ CORRECTION BUG 2 : donation_total est RETIRÉ d'ici.
-     * Il était écrit dans $userData puis recalculé dans createDonationForUser(),
-     * ce qui provoquait un double comptage (ex: 5000 + 5000 = 10000 pour un seul don).
-     * La mise à jour de donation_total est désormais gérée UNIQUEMENT dans createDonationForUser().
-     *
-     * ✅ CORRECTION BUG 5 : payment_method est RETIRÉ d'ici.
-     * Ce champ n'est pas dans $fillable du modèle User et appartient à la table donations,
-     * où il est déjà inséré via createDonationForUser().
+     * @param Request $request
+     * @return array
      */
     private function getDonationData(Request $request)
     {
@@ -471,6 +522,9 @@ class RegisterController extends Controller
 
     /**
      * Get data specific to partnership form
+     *
+     * @param Request $request
+     * @return array
      */
     private function getPartnershipData(Request $request)
     {
@@ -514,6 +568,9 @@ class RegisterController extends Controller
 
     /**
      * Determine the form type from request
+     *
+     * @param Request $request
+     * @return string
      */
     private function getFormType(Request $request)
     {
@@ -538,6 +595,9 @@ class RegisterController extends Controller
 
     /**
      * Get role from form type
+     *
+     * @param string $formType
+     * @return string
      */
     private function getRoleFromFormType($formType)
     {
@@ -553,6 +613,10 @@ class RegisterController extends Controller
 
     /**
      * Upload file to storage
+     *
+     * @param \Illuminate\Http\UploadedFile $file
+     * @param string $path
+     * @return string
      */
     private function uploadFile($file, $path)
     {
@@ -563,6 +627,9 @@ class RegisterController extends Controller
 
     /**
      * Get all submissions (for admin)
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
      */
     public function getAllSubmissions(Request $request)
     {
@@ -583,6 +650,9 @@ class RegisterController extends Controller
 
     /**
      * Get single submission
+     *
+     * @param int $id
+     * @return \Illuminate\Http\JsonResponse
      */
     public function getSubmission($id)
     {
@@ -603,6 +673,10 @@ class RegisterController extends Controller
 
     /**
      * Update submission status
+     *
+     * @param Request $request
+     * @param int $id
+     * @return \Illuminate\Http\JsonResponse
      */
     public function updateStatus(Request $request, $id)
     {
