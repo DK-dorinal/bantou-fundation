@@ -10,7 +10,7 @@
             <ul class="hidden lg:flex items-center space-x-1">
                 <!-- Notre Identité -->
                 <li class="relative group">
-                    <a href="{{ route('identite') }}" class="flex items-center gap-2 px-4 py-2 text-sm font-semibold uppercase tracking-wide text-[#d4af37] hover:text-[#e6c34d] hover:bg-gradient-to-r hover:from-[#d4af37]/10 hover:to-transparent rounded-lg transition-all duration-300 {{ Route::currentRouteName() == 'identite' ? 'bg-gradient-to-r from-[#d4af37]/15 to-transparent text-[#e6c34d]' : '' }}">
+                    <a href="{{ route('identite') }}" class="flex items-center gap-2 px-4 py-2 text-sm font-semibold uppercase tracking-wide text-[#0f1a3a] hover:text-[#d4af37] hover:bg-gradient-to-r hover:from-[#d4af37]/10 hover:to-transparent rounded-lg transition-all duration-300 {{ Route::currentRouteName() == 'identite' ? 'bg-gradient-to-r from-[#d4af37]/15 to-transparent text-[#d4af37]' : '' }}">
                         <i class="fas fa-users text-sm"></i>
                         <span>Notre Identité</span>
                         <i class="fas fa-chevron-down text-xs transition-transform duration-300 group-hover:rotate-180"></i>
@@ -38,7 +38,7 @@
 
                 <!-- Nos Actions -->
                 <li class="relative group">
-                    <a href="{{ route('action') }}" class="flex items-center gap-2 px-4 py-2 text-sm font-semibold uppercase tracking-wide text-[#d4af37] hover:text-[#e6c34d] hover:bg-gradient-to-r hover:from-[#d4af37]/10 hover:to-transparent rounded-lg transition-all duration-300 {{ Route::currentRouteName() == 'action' ? 'bg-gradient-to-r from-[#d4af37]/15 to-transparent text-[#e6c34d]' : '' }}">
+                    <a href="{{ route('action') }}" class="flex items-center gap-2 px-4 py-2 text-sm font-semibold uppercase tracking-wide text-[#0f1a3a] hover:text-[#d4af37] hover:bg-gradient-to-r hover:from-[#d4af37]/10 hover:to-transparent rounded-lg transition-all duration-300 {{ Route::currentRouteName() == 'action' ? 'bg-gradient-to-r from-[#d4af37]/15 to-transparent text-[#d4af37]' : '' }}">
                         <i class="fas fa-hands-helping text-sm"></i>
                         <span>Nos Actions</span>
                         <i class="fas fa-chevron-down text-xs transition-transform duration-300 group-hover:rotate-180"></i>
@@ -63,7 +63,7 @@
 
                 <!-- Blog -->
                 <li>
-                    <a href="{{ route('blog') }}" class="flex items-center gap-2 px-4 py-2 text-sm font-semibold uppercase tracking-wide text-[#d4af37] hover:text-[#e6c34d] hover:bg-gradient-to-r hover:from-[#d4af37]/10 hover:to-transparent rounded-lg transition-all duration-300 {{ Route::currentRouteName() == 'blog' ? 'bg-gradient-to-r from-[#d4af37]/15 to-transparent text-[#e6c34d]' : '' }}">
+                    <a href="{{ route('blog') }}" class="flex items-center gap-2 px-4 py-2 text-sm font-semibold uppercase tracking-wide text-[#0f1a3a] hover:text-[#d4af37] hover:bg-gradient-to-r hover:from-[#d4af37]/10 hover:to-transparent rounded-lg transition-all duration-300 {{ Route::currentRouteName() == 'blog' ? 'bg-gradient-to-r from-[#d4af37]/15 to-transparent text-[#d4af37]' : '' }}">
                         <i class="fas fa-newspaper text-sm"></i>
                         <span>Blog & Actualités</span>
                     </a>
@@ -71,7 +71,7 @@
 
                 <!-- Nous Rejoindre -->
                 <li class="relative group">
-                    <a href="#" class="flex items-center gap-2 px-4 py-2 text-sm font-semibold uppercase tracking-wide text-[#d4af37] hover:text-[#e6c34d] hover:bg-gradient-to-r hover:from-[#d4af37]/10 hover:to-transparent rounded-lg transition-all duration-300">
+                    <a href="#" class="flex items-center gap-2 px-4 py-2 text-sm font-semibold uppercase tracking-wide text-[#0f1a3a] hover:text-[#d4af37] hover:bg-gradient-to-r hover:from-[#d4af37]/10 hover:to-transparent rounded-lg transition-all duration-300">
                         <i class="fas fa-handshake text-sm"></i>
                         <span>Nous Rejoindre</span>
                         <i class="fas fa-chevron-down text-xs transition-transform duration-300 group-hover:rotate-180"></i>
@@ -124,11 +124,46 @@
                 </li>
             </ul>
 
-            <!-- Bouton Don Desktop -->
-            <div class="hidden lg:block">
-                <a href="{{ route('don') }}" class="inline-flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-[#d4af37] to-[#e6c34d] text-white font-bold text-sm uppercase rounded-lg shadow-md hover:shadow-lg hover:scale-105 transition-all duration-300">
+            <!-- Boutons Desktop : Don + Icône Connexion/Profil -->
+            <div class="hidden lg:flex items-center gap-3">
+                <!-- Bouton Don -->
+                <a href="{{ route('don') }}" class="inline-flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-[#d4af37] to-[#e6c34d] text-[#0f1a3a] font-bold text-sm uppercase rounded-lg shadow-md hover:shadow-lg hover:scale-105 transition-all duration-300">
                     <i class="fas fa-gift"></i> Faire un Don
                 </a>
+
+                <!-- Icône Connexion / Profil -->
+                @auth
+                    <!-- Utilisateur connecté - Menu déroulant au clic -->
+                    <div class="relative">
+                        <button id="userMenuBtn" class="flex items-center justify-center w-10 h-10 rounded-full bg-[#0f1a3a] text-white hover:bg-[#d4af37] hover:text-[#0f1a3a] transition-all duration-300">
+                            <i class="fas fa-user text-sm"></i>
+                        </button>
+                        <div id="userDropdown" class="absolute right-0 top-full mt-2 w-56 bg-white/95 backdrop-blur-md rounded-xl shadow-2xl border border-[#d4af37]/20 opacity-0 invisible transition-all duration-300 z-50">
+                            <div class="p-4 border-b border-gray-100">
+                                <p class="font-bold text-[#0f1a3a]">{{ Auth::user()->name }}</p>
+                                <p class="text-xs text-gray-500">{{ Auth::user()->email }}</p>
+                            </div>
+                            <a href="{{ route('user_dashboard') }}" class="flex items-center gap-3 px-4 py-3 text-sm text-gray-700 hover:bg-[#d4af37]/10 hover:text-[#d4af37] transition-all duration-300">
+                                <i class="fas fa-tachometer-alt w-4"></i> Tableau de bord
+                            </a>
+                            <a href="{{ route('user_profil') }}" class="flex items-center gap-3 px-4 py-3 text-sm text-gray-700 hover:bg-[#d4af37]/10 hover:text-[#d4af37] transition-all duration-300">
+                                <i class="fas fa-user w-4"></i> Mon profil
+                            </a>
+                            <a href="{{ route('historique') }}" class="flex items-center gap-3 px-4 py-3 text-sm text-gray-700 hover:bg-[#d4af37]/10 hover:text-[#d4af37] transition-all duration-300">
+                                <i class="fas fa-history w-4"></i> Historique
+                            </a>
+                            <div class="border-t border-gray-100 my-1"></div>
+                            <a href="#" id="logoutHeaderBtn" class="flex items-center gap-3 px-4 py-3 text-sm text-red-500 hover:bg-red-50 transition-all duration-300">
+                                <i class="fas fa-sign-out-alt w-4"></i> Déconnexion
+                            </a>
+                        </div>
+                    </div>
+                @else
+                    <!-- Utilisateur non connecté -->
+                    <a href="{{ route('login') }}" class="flex items-center justify-center w-10 h-10 rounded-full bg-[#0f1a3a] text-white hover:bg-[#d4af37] hover:text-[#0f1a3a] transition-all duration-300" title="Connexion">
+                        <i class="fas fa-sign-in-alt text-sm"></i>
+                    </a>
+                @endauth
             </div>
 
             <!-- Bouton Menu Mobile -->
@@ -144,7 +179,7 @@
             <div class="flex flex-col py-4">
                 <!-- Notre Identité Mobile -->
                 <div class="border-b border-[#d4af37]/10">
-                    <button class="mobile-dropdown-btn w-full flex items-center justify-between px-6 py-4 text-left font-semibold text-[#d4af37] hover:bg-gradient-to-r hover:from-[#d4af37]/10 hover:to-transparent transition-all duration-300">
+                    <button class="mobile-dropdown-btn w-full flex items-center justify-between px-6 py-4 text-left font-semibold text-[#0f1a3a] hover:bg-gradient-to-r hover:from-[#d4af37]/10 hover:to-transparent transition-all duration-300">
                         <div class="flex items-center gap-3">
                             <i class="fas fa-users"></i>
                             <span>Notre Identité</span>
@@ -172,7 +207,7 @@
 
                 <!-- Nos Actions Mobile -->
                 <div class="border-b border-[#d4af37]/10">
-                    <button class="mobile-dropdown-btn w-full flex items-center justify-between px-6 py-4 text-left font-semibold text-[#d4af37] hover:bg-gradient-to-r hover:from-[#d4af37]/10 hover:to-transparent transition-all duration-300">
+                    <button class="mobile-dropdown-btn w-full flex items-center justify-between px-6 py-4 text-left font-semibold text-[#0f1a3a] hover:bg-gradient-to-r hover:from-[#d4af37]/10 hover:to-transparent transition-all duration-300">
                         <div class="flex items-center gap-3">
                             <i class="fas fa-hands-helping"></i>
                             <span>Nos Actions</span>
@@ -196,14 +231,14 @@
                 </div>
 
                 <!-- Blog Mobile -->
-                <a href="{{ route('blog') }}" class="flex items-center gap-3 px-6 py-4 border-b border-[#d4af37]/10 font-semibold text-[#d4af37] hover:bg-gradient-to-r hover:from-[#d4af37]/10 hover:to-transparent transition-all duration-300">
+                <a href="{{ route('blog') }}" class="flex items-center gap-3 px-6 py-4 border-b border-[#d4af37]/10 font-semibold text-[#0f1a3a] hover:bg-gradient-to-r hover:from-[#d4af37]/10 hover:to-transparent transition-all duration-300">
                     <i class="fas fa-newspaper"></i>
                     <span>Blog & Actualités</span>
                 </a>
 
                 <!-- Nous Rejoindre Mobile -->
                 <div class="border-b border-[#d4af37]/10">
-                    <button class="mobile-dropdown-btn w-full flex items-center justify-between px-6 py-4 text-left font-semibold text-[#d4af37] hover:bg-gradient-to-r hover:from-[#d4af37]/10 hover:to-transparent transition-all duration-300">
+                    <button class="mobile-dropdown-btn w-full flex items-center justify-between px-6 py-4 text-left font-semibold text-[#0f1a3a] hover:bg-gradient-to-r hover:from-[#d4af37]/10 hover:to-transparent transition-all duration-300">
                         <div class="flex items-center gap-3">
                             <i class="fas fa-handshake"></i>
                             <span>Nous Rejoindre</span>
@@ -254,10 +289,20 @@
                 </div>
 
                 <!-- Bouton Don Mobile -->
-                <div class="p-4 mt-2">
-                    <a href="{{ route('don') }}" class="flex items-center justify-center gap-2 w-full px-5 py-3 bg-gradient-to-r from-[#d4af37] to-[#e6c34d] text-white font-bold text-sm uppercase rounded-lg shadow-md hover:shadow-lg transition-all duration-300">
+                <div class="p-4 mt-2 flex flex-col gap-2">
+                    <a href="{{ route('don') }}" class="flex items-center justify-center gap-2 w-full px-5 py-3 bg-gradient-to-r from-[#d4af37] to-[#e6c34d] text-[#0f1a3a] font-bold text-sm uppercase rounded-lg shadow-md hover:shadow-lg transition-all duration-300">
                         <i class="fas fa-gift"></i> Faire un Don
                     </a>
+                    @guest
+                        <div class="flex gap-2">
+                            <a href="{{ route('login') }}" class="flex-1 text-center px-4 py-2 border border-[#d4af37] text-[#d4af37] rounded-lg hover:bg-[#d4af37] hover:text-white transition-all duration-300">
+                                <i class="fas fa-sign-in-alt mr-1"></i> Connexion
+                            </a>
+                            <a href="{{ route('register') }}" class="flex-1 text-center px-4 py-2 bg-[#d4af37] text-white rounded-lg hover:bg-[#e6c34d] transition-all duration-300">
+                                <i class="fas fa-user-plus mr-1"></i> Inscription
+                            </a>
+                        </div>
+                    @endguest
                 </div>
             </div>
         </div>
@@ -273,10 +318,8 @@
         window.addEventListener('scroll', function() {
             if (window.scrollY > 50) {
                 header.classList.add('shadow-lg');
-                header.classList.add('border-b-[#d4af37]/50');
             } else {
                 header.classList.remove('shadow-lg');
-                header.classList.remove('border-b-[#d4af37]/50');
             }
         });
 
@@ -313,6 +356,28 @@
             });
         });
 
+        // Menu utilisateur desktop - toggle au clic
+        const userMenuBtn = document.getElementById('userMenuBtn');
+        const userDropdown = document.getElementById('userDropdown');
+
+        if (userMenuBtn && userDropdown) {
+            userMenuBtn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                userDropdown.classList.toggle('opacity-0');
+                userDropdown.classList.toggle('invisible');
+                userDropdown.classList.toggle('opacity-100');
+                userDropdown.classList.toggle('visible');
+            });
+
+            // Fermer le dropdown en cliquant ailleurs
+            document.addEventListener('click', function(e) {
+                if (!userMenuBtn.contains(e.target) && userDropdown) {
+                    userDropdown.classList.add('opacity-0', 'invisible');
+                    userDropdown.classList.remove('opacity-100', 'visible');
+                }
+            });
+        }
+
         // Close mobile menu when clicking a link
         document.querySelectorAll('#mobile-menu a').forEach(link => {
             link.addEventListener('click', function() {
@@ -328,7 +393,7 @@
         });
 
         // Logout functionality
-        const logoutLinks = document.querySelectorAll('#logoutMenuLink, #logoutMobileLink');
+        const logoutLinks = document.querySelectorAll('#logoutMenuLink, #logoutMobileLink, #logoutHeaderBtn');
         logoutLinks.forEach(link => {
             link.addEventListener('click', function(e) {
                 e.preventDefault();
@@ -359,9 +424,3 @@
 <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
     @csrf
 </form>
-<style>
-.text-\[\#d4af37\]
-{
-    color: #1a2b55;
-}
-</style>
