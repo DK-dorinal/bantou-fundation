@@ -1,4 +1,4 @@
-@extends('front.layout.master')
+@extends('_partials.master')
 
 @section('title', 'Notre Identité | Bantou-Foundation')
 @section('description', 'Découvrez l\'histoire, les valeurs, la mission et l\'équipe de Bantou-Foundation, engagée pour l\'éducation, la santé et le développement durable en Afrique.')
