@@ -111,13 +111,6 @@
                                 <a href="{{ route('adhesion') }}" class="flex items-center gap-3 px-4 py-3 text-sm text-gray-700 hover:text-[#d4af37] hover:bg-gradient-to-r hover:from-[#d4af37]/10 hover:to-transparent hover:pl-6 transition-all duration-300">
                                     <i class="fas fa-user-plus w-5 text-[#d4af37]"></i> Adhérer à la fondation
                                 </a>
-                                <div class="h-px bg-gradient-to-r from-transparent via-[#d4af37]/20 to-transparent my-1"></div>
-                                <a href="{{ route('login') }}" class="flex items-center gap-3 px-4 py-3 text-sm text-gray-700 hover:text-[#d4af37] hover:bg-gradient-to-r hover:from-[#d4af37]/10 hover:to-transparent hover:pl-6 transition-all duration-300">
-                                    <i class="fas fa-sign-in-alt w-5 text-[#d4af37]"></i> Connexion
-                                </a>
-                                <a href="{{ route('register') }}" class="flex items-center gap-3 px-4 py-3 text-sm text-gray-700 hover:text-[#d4af37] hover:bg-gradient-to-r hover:from-[#d4af37]/10 hover:to-transparent hover:pl-6 transition-all duration-300">
-                                    <i class="fas fa-user-plus w-5 text-[#d4af37]"></i> Inscription
-                                </a>
                             @endauth
                         </div>
                     </div>
@@ -281,9 +274,6 @@
                             <a href="{{ route('login') }}" class="flex items-center gap-3 px-6 py-3 pl-12 text-sm text-gray-600 hover:text-[#d4af37] hover:bg-gradient-to-r hover:from-[#d4af37]/10 hover:to-transparent transition-all duration-300">
                                 <i class="fas fa-sign-in-alt w-4 text-[#d4af37]"></i> Connexion
                             </a>
-                            <a href="{{ route('register') }}" class="flex items-center gap-3 px-6 py-3 pl-12 text-sm text-gray-600 hover:text-[#d4af37] hover:bg-gradient-to-r hover:from-[#d4af37]/10 hover:to-transparent transition-all duration-300">
-                                <i class="fas fa-user-plus w-4 text-[#d4af37]"></i> Inscription
-                            </a>
                         @endauth
                     </div>
                 </div>
@@ -298,9 +288,7 @@
                             <a href="{{ route('login') }}" class="flex-1 text-center px-4 py-2 border border-[#d4af37] text-[#d4af37] rounded-lg hover:bg-[#d4af37] hover:text-white transition-all duration-300">
                                 <i class="fas fa-sign-in-alt mr-1"></i> Connexion
                             </a>
-                            <a href="{{ route('register') }}" class="flex-1 text-center px-4 py-2 bg-[#d4af37] text-white rounded-lg hover:bg-[#e6c34d] transition-all duration-300">
-                                <i class="fas fa-user-plus mr-1"></i> Inscription
-                            </a>
+
                         </div>
                     @endguest
                 </div>
